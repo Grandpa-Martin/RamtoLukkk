@@ -1,241 +1,693 @@
+
+
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tic Tac Toe - Royal Edition</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
-      color: #fff;
-      text-align: center;
-      padding: 20px;
-    }
 
-    h1 {
-      font-size: 3.2rem;
-      color: gold;
-      text-shadow: 0 0 10px gold;
-      margin-bottom: 10px;
-    }
+  <meta charset="UTF-8">
 
-    #scoreboard {
-      margin: 20px auto;
-      font-size: 1.2rem;
-      background: #111;
-      border: 2px solid gold;
-      border-radius: 10px;
-      padding: 10px;
-      width: fit-content;
-      box-shadow: 0 0 20px gold;
-    }
+  <title>Tic Tac Toe - Royal Edition</title>
 
-    .score-item {
-      margin: 5px 15px;
-      display: inline-block;
-    }
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    #game {
-      display: grid;
-      grid-template-columns: repeat(3, 110px);
-      gap: 12px;
-      justify-content: center;
-      margin: 30px auto;
-    }
+  <style>
 
-    .cell {
-      width: 110px;
-      height: 110px;
-      background: #222;
-      border: 2px solid #666;
-      border-radius: 15px;
-      font-size: 2.8rem;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      box-shadow: inset 0 0 10px #000;
-      transition: all 0.3s ease;
-    }
+    /* Basic reset and variables */
 
-    .cell:hover {
-      border-color: gold;
-      box-shadow: 0 0 15px gold;
-      transform: scale(1.05);
-    }
+    :root {
 
-    #status {
-      font-size: 1.5rem;
-      margin-top: 20px;
-      color: cyan;
-      text-shadow: 0 0 5px cyan;
-    }
+      --bg-color: #f0f4f8;
 
-    .btns {
-      margin-top: 25px;
-    }
+      --panel-color: rgba(255, 255, 255, 0.3);
 
-    button {
-      margin: 5px;
-      padding: 10px 20px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 8px;
-      background: gold;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 10px gold;
-    }
+      --text-color: #222;
 
-    button:hover {
-      background: #ffdf00;
-      box-shadow: 0 0 15px #ff0;
-    }
+      --x-color: #D32F2F;
 
-    .ai-toggle {
-      background: #0cf;
-      color: black;
-      box-shadow: 0 0 10px #0cf;
-    }
+      --o-color: #1976D2;
 
-    .ai-toggle:hover {
-      background: #0af;
-    }
+      --accent-color: #FFC107;
 
-    .winner {
-      color: #0f0;
-      text-shadow: 0 0 10px lime;
-    }
-  </style>
+      --hover-color: rgba(255, 255, 255, 0.5);
+
+    }
+
+    [data-theme="dark"] {
+
+      --bg-color: #121212;
+
+      --panel-color: rgba(20, 20, 20, 0.4);
+
+      --text-color: #eef;
+
+      --accent-color: #FFD600;
+
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+
+      background: var(--bg-color) url('https://source.unsplash.com/1600x900/?marble,royal') no-repeat center/cover;
+
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+
+      color: var(--text-color);
+
+      display: flex; flex-direction: column; align-items: center;
+
+      min-height: 100vh; padding: 1rem;
+
+      transition: background 0.5s;
+
+    }
+
+    .container {
+
+      backdrop-filter: blur(10px);
+
+      -webkit-backdrop-filter: blur(10px);
+
+      background: var(--panel-color);
+
+      border-radius: 20px;
+
+      padding: 20px;
+
+      width: 300px;
+
+      max-width: 90%;
+
+      box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+
+      text-align: center;
+
+    }
+
+    h1 {
+
+      font-size: 1.5em;
+
+      color: var(--accent-color);
+
+      margin-bottom: 0.5em;
+
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+
+    }
+
+    .scoreboard {
+
+      margin-bottom: 1em;
+
+      font-size: 0.9em;
+
+      letter-spacing: 0.5px;
+
+    }
+
+    .status {
+
+      margin: 0.5em 0 1em;
+
+      font-weight: bold;
+
+    }
+
+    #board {
+
+      display: grid;
+
+      grid-template: repeat(3, 80px) / repeat(3, 80px);
+
+      gap: 5px;
+
+      margin: 0 auto 1em;
+
+    }
+
+    .cell {
+
+      background: rgba(255, 255, 255, 0.4);
+
+      border-radius: 10px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: 2.5em;
+
+      cursor: pointer;
+
+      position: relative;
+
+      transition: background 0.3s, transform 0.1s;
+
+    }
+
+    .cell:hover {
+
+      background: var(--hover-color);
+
+      transform: scale(1.05);
+
+    }
+
+    .cell.disabled { cursor: default; }
+
+    .cell.x::before,
+
+    .cell.o::before {
+
+      content: attr(data-mark);
+
+      opacity: 0;
+
+      animation: fadeIn 0.3s forwards;
+
+    }
+
+    .cell.win {
+
+      animation: glow 1s alternate infinite;
+
+    }
+
+    @keyframes fadeIn {
+
+      from { opacity: 0; transform: scale(0.5); }
+
+      to { opacity: 1; transform: scale(1); }
+
+    }
+
+    @keyframes glow {
+
+      0% { box-shadow: 0 0 10px var(--accent-color); }
+
+      100% { box-shadow: 0 0 20px var(--accent-color); }
+
+    }
+
+    button {
+
+      margin: 0.5em 0.2em;
+
+      padding: 0.5em 1em;
+
+      border: none;
+
+      border-radius: 5px;
+
+      background: var(--accent-color);
+
+      color: #fff;
+
+      font-size: 0.9em;
+
+      cursor: pointer;
+
+      transition: background 0.3s;
+
+    }
+
+    button:hover {
+
+      background: #e0a800;
+
+    }
+
+    #themeToggle {
+
+      position: absolute;
+
+      top: 10px; right: 10px;
+
+      background: none;
+
+      font-size: 0.9em;
+
+      color: var(--text-color);
+
+      opacity: 0.7;
+
+    }
+
+    #themeToggle:hover { opacity: 1; }
+
+  </style>
+
 </head>
+
 <body>
 
-  <h1>Tic Tac Toe - Royal Edition</h1>
 
-  <div id="scoreboard">
-    <span class="score-item">X Wins: <span id="scoreX">0</span></span> |
-    <span class="score-item">O Wins: <span id="scoreO">0</span></span> |
-    <span class="score-item">Draws: <span id="scoreDraw">0</span></span>
-  </div>
+<div id="themeToggle" onclick="toggleTheme()">🌙 / ☀️</div>
 
-  <div id="game">
-    <div class="cell" data-index="0"></div>
-    <div class="cell" data-index="1"></div>
-    <div class="cell" data-index="2"></div>
-    <div class="cell" data-index="3"></div>
-    <div class="cell" data-index="4"></div>
-    <div class="cell" data-index="5"></div>
-    <div class="cell" data-index="6"></div>
-    <div class="cell" data-index="7"></div>
-    <div class="cell" data-index="8"></div>
-  </div>
 
-  <div id="status">Player X's turn</div>
+<div class="container">
 
-  <div class="btns">
-    <button onclick="restartGame()">Restart</button>
-    <button class="ai-toggle" onclick="toggleAI()">AI: <span id="aiStatus">OFF</span></button>
-  </div>
+  <h1>Tic Tac Toe - Royal</h1>
 
-  <!-- Sounds -->
-  <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_ef4f208ea4.mp3"></audio>
-  <audio id="winSound" src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_a69846d2cb.mp3"></audio>
-  <audio id="drawSound" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_52d8219631.mp3"></audio>
+  <div class="scoreboard">
 
-  <script>
-    const cells = document.querySelectorAll('.cell');
-    const statusText = document.getElementById('status');
-    const scoreX = document.getElementById('scoreX');
-    const scoreO = document.getElementById('scoreO');
-    const scoreDraw = document.getElementById('scoreDraw');
-    const aiStatus = document.getElementById('aiStatus');
-    const clickSound = document.getElementById('clickSound');
-    const winSound = document.getElementById('winSound');
-    const drawSound = document.getElementById('drawSound');
+    X Wins: <span id="xWins">0</span> |
 
-    let board = ['', '', '', '', '', '', '', '', ''];
-    let currentPlayer = 'X';
-    let gameOver = false;
-    let isAI = false;
+    O Wins: <span id="oWins">0</span> |
 
-    const winCombos = [
-      [0,1,2], [3,4,5], [6,7,8],
-      [0,3,6], [1,4,7], [2,5,8],
-      [0,4,8], [2,4,6]
-    ];
+    Draws: <span id="draws">0</span>
 
-    function checkWinner() {
-      for (let combo of winCombos) {
-        const [a,b,c] = combo;
-        if (board[a] && board[a] === board[b] && board[b] === board[c]) {
-          gameOver = true;
-          statusText.textContent = `Player ${board[a]} wins!`;
-          statusText.classList.add('winner');
-          board[a] === 'X' ? scoreX.textContent++ : scoreO.textContent++;
-          winSound.play();
-          return;
-        }
-      }
+  </div>
 
-      if (!board.includes('')) {
-        statusText.textContent = "It's a draw!";
-        scoreDraw.textContent++;
-        drawSound.play();
-        gameOver = true;
-      }
-    }
+  <div class="status" id="status">Player X's turn</div>
 
-    function aiMove() {
-      if (!isAI || currentPlayer !== 'O' || gameOver) return;
-      const empty = board.map((v, i) => v === '' ? i : null).filter(v => v !== null);
-      const move = empty[Math.floor(Math.random() * empty.length)];
-      setTimeout(() => {
-        makeMove(move);
-      }, 500);
-    }
+  <div id="board">
 
-    function makeMove(index) {
-      if (board[index] || gameOver) return;
-      board[index] = currentPlayer;
-      cells[index].textContent = currentPlayer;
-      clickSound.play();
-      checkWinner();
+    <!-- 3x3 Cells -->
 
-      if (!gameOver) {
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        statusText.classList.remove('winner');
-        statusText.textContent = `Player ${currentPlayer}'s turn`;
-        aiMove();
-      }
-    }
+    <div class="cell" data-index="0"></div>
 
-    function handleClick(e) {
-      const index = e.target.dataset.index;
-      if (currentPlayer === 'X' || !isAI) makeMove(index);
-    }
+    <div class="cell" data-index="1"></div>
 
-    function restartGame() {
-      board = ['', '', '', '', '', '', '', '', ''];
-      cells.forEach(cell => cell.textContent = '');
-      currentPlayer = 'X';
-      gameOver = false;
-      statusText.classList.remove('winner');
-      statusText.textContent = `Player X's turn`;
-    }
+    <div class="cell" data-index="2"></div>
 
-    function toggleAI() {
-      isAI = !isAI;
-      aiStatus.textContent = isAI ? 'ON' : 'OFF';
-      restartGame();
-    }
+    <div class="cell" data-index="3"></div>
 
-    cells.forEach(cell => cell.addEventListener('click', handleClick));
-  </script>
+    <div class="cell" data-index="4"></div>
+
+    <div class="cell" data-index="5"></div>
+
+    <div class="cell" data-index="6"></div>
+
+    <div class="cell" data-index="7"></div>
+
+    <div class="cell" data-index="8"></div>
+
+  </div>
+
+  <button id="restartBtn">Restart</button>
+
+  <span style="margin-left:10px;">
+
+    <label>AI First: <input type="checkbox" id="aiFirst"></label>
+
+  </span>
+
+</div>
+
+
+<script>
+
+  // Game state variables
+
+  let board = Array(9).fill('');
+
+  let currentPlayer = 'X';
+
+  let gameOver = false;
+
+  let xWins = 0, oWins = 0, draws = 0;
+
+  const winPatterns = [
+
+    [0,1,2],[3,4,5],[6,7,8],
+
+    [0,3,6],[1,4,7],[2,5,8],
+
+    [0,4,8],[2,4,6]
+
+  ];
+
+  const cells = document.querySelectorAll('.cell');
+
+  const statusText = document.getElementById('status');
+
+  const xWinsText = document.getElementById('xWins');
+
+  const oWinsText = document.getElementById('oWins');
+
+  const drawsText = document.getElementById('draws');
+
+  const restartBtn = document.getElementById('restartBtn');
+
+  const aiCheckbox = document.getElementById('aiFirst');
+
+
+  // Audio context for click sounds
+
+  let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  function playBeep(freq, duration=0.15) {
+
+    let osc = audioCtx.createOscillator();
+
+    let gain = audioCtx.createGain();
+
+    osc.connect(gain); gain.connect(audioCtx.destination);
+
+    osc.type = 'square';
+
+    osc.frequency.value = freq;
+
+    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+
+    osc.start();
+
+    osc.stop(audioCtx.currentTime + duration);
+
+  }
+
+
+  // Initialize game
+
+  function initGame() {
+
+    board.fill('');
+
+    gameOver = false;
+
+    currentPlayer = 'X';
+
+    cells.forEach(cell => {
+
+      cell.textContent = '';
+
+      cell.className = 'cell';
+
+      cell.removeAttribute('data-mark');
+
+      cell.addEventListener('click', onCellClick);
+
+    });
+
+    // If AI-first is checked, let AI (as X) make a random move
+
+    if (aiCheckbox.checked) {
+
+      currentPlayer = 'O'; // let X be AI
+
+      statusText.textContent = "AI (X) is thinking...";
+
+      setTimeout(aiMakeMove, randomDelay());
+
+    } else {
+
+      currentPlayer = 'X';
+
+      statusText.textContent = "Player X's turn";
+
+    }
+
+  }
+
+
+  function onCellClick(e) {
+
+    if (gameOver) return;
+
+    const idx = e.target.getAttribute('data-index');
+
+    if (board[idx] !== '' ) return;
+
+    // First click should resume audio context for some browsers
+
+    audioCtx.resume();
+
+    placeMark(idx, 'X');
+
+    playBeep(330); // click sound
+
+    checkGameEnd();
+
+    if (!gameOver) {
+
+      currentPlayer = 'O';
+
+      statusText.textContent = "AI is thinking...";
+
+      setTimeout(aiMakeMove, randomDelay());
+
+    }
+
+  }
+
+
+  function aiMakeMove() {
+
+    if (gameOver) return;
+
+    // Minimax to find best move for O
+
+    let bestScore = Infinity, move = null;
+
+    for (let i = 0; i < 9; i++) {
+
+      if (board[i] === '') {
+
+        board[i] = 'O';
+
+        let score = minimax(board, 0, true);
+
+        board[i] = '';
+
+        if (score < bestScore) {
+
+          bestScore = score;
+
+          move = i;
+
+        }
+
+      }
+
+    }
+
+    if (move !== null) {
+
+      placeMark(move, 'O');
+
+      playBeep(440); // AI move sound
+
+    }
+
+    checkGameEnd();
+
+    if (!gameOver) {
+
+      currentPlayer = 'X';
+
+      statusText.textContent = "Player X's turn";
+
+    }
+
+  }
+
+
+  function placeMark(idx, mark) {
+
+    board[idx] = mark;
+
+    const cell = document.querySelector(`.cell[data-index='${idx}']`);
+
+    cell.setAttribute('data-mark', mark);
+
+    cell.classList.add(mark.toLowerCase());
+
+    cell.removeEventListener('click', onCellClick);
+
+  }
+
+
+  function checkGameEnd() {
+
+    // Check for win
+
+    let winner = null;
+
+    winPatterns.forEach(pattern => {
+
+      const [a,b,c] = pattern;
+
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+
+        winner = board[a];
+
+        // highlight winning cells
+
+        document.querySelector(`.cell[data-index='${a}']`).classList.add('win');
+
+        document.querySelector(`.cell[data-index='${b}']`).classList.add('win');
+
+        document.querySelector(`.cell[data-index='${c}']`).classList.add('win');
+
+      }
+
+    });
+
+    if (winner) {
+
+      gameOver = true;
+
+      if (winner === 'X') {
+
+        xWins++;
+
+        xWinsText.textContent = xWins;
+
+      } else {
+
+        oWins++;
+
+        oWinsText.textContent = oWins;
+
+      }
+
+      statusText.textContent = `${winner} wins!`;
+
+      playBeep(600, 0.3); // win sound
+
+      return;
+
+    }
+
+    // Check for draw
+
+    if (!board.includes('')) {
+
+      gameOver = true;
+
+      draws++;
+
+      drawsText.textContent = draws;
+
+      statusText.textContent = "It's a draw!";
+
+      playBeep(500, 0.2); // draw sound
+
+      return;
+
+    }
+
+  }
+
+
+  // Minimax algorithm: returns score for 'X' (maximizer) perspective
+
+  function minimax(boardState, depth, isMaximizing) {
+
+    // Check terminal states
+
+    const win = checkWinner(boardState);
+
+    if (win === 'X') return 10 - depth;
+
+    if (win === 'O') return depth - 10;
+
+    if (!boardState.includes('')) return 0; // draw
+
+
+    if (isMaximizing) {
+
+      let best = -Infinity;
+
+      for (let i = 0; i < 9; i++) {
+
+        if (boardState[i] === '') {
+
+          boardState[i] = 'X';
+
+          best = Math.max(best, minimax(boardState, depth + 1, false));
+
+          boardState[i] = '';
+
+        }
+
+      }
+
+      return best;
+
+    } else {
+
+      let best = Infinity;
+
+      for (let i = 0; i < 9; i++) {
+
+        if (boardState[i] === '') {
+
+          boardState[i] = 'O';
+
+          best = Math.min(best, minimax(boardState, depth + 1, true));
+
+          boardState[i] = '';
+
+        }
+
+      }
+
+      return best;
+
+    }
+
+  }
+
+
+  // Check for a winner (for minimax)
+
+  function checkWinner(bd) {
+
+    for (let pattern of winPatterns) {
+
+      const [a,b,c] = pattern;
+
+      if (bd[a] && bd[a] === bd[b] && bd[a] === bd[c]) {
+
+        return bd[a];
+
+      }
+
+    }
+
+    return null;
+
+  }
+
+
+  function randomDelay() {
+
+    return 500 + Math.random() * 500;
+
+  }
+
+
+  restartBtn.addEventListener('click', () => {
+
+    initGame();
+
+  });
+
+
+  // Theme toggle
+
+  function toggleTheme() {
+
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+
+    document.documentElement.setAttribute('data-theme', theme);
+
+  }
+
+
+  // Start the game
+
+  initGame();
+
+</script>
 
 </body>
+
 </html>
