@@ -182,27 +182,27 @@
     osc.stop(audioCtx.currentTime + duration);
   }
 
-  // Initialize game
-  function initGame() {
-    board.fill('');
-    gameOver = false;
+// Initialize game
+function initGame() {
+  board.fill('');
+  gameOver = false;
+  currentPlayer = 'X';
+  cells.forEach(cell => {
+    cell.textContent = '';
+    cell.className = 'cell';
+    cell.removeAttribute('data-mark');
+    cell.addEventListener('click', onCellClick);  // Add click listener here
+  });
+  // If AI-first is checked, let AI (as X) make a random move
+  if (aiCheckbox.checked) {
+    currentPlayer = 'O'; // let X be AI
+    statusText.textContent = "AI (X) is thinking...";
+    setTimeout(aiMakeMove, randomDelay());
+  } else {
     currentPlayer = 'X';
-    cells.forEach(cell => {
-      cell.textContent = '';
-      cell.className = 'cell';
-      cell.removeAttribute('data-mark');
-      cell.addEventListener('click', onCellClick);
-    });
-    // If AI-first is checked, let AI (as X) make a random move
-    if (aiCheckbox.checked) {
-      currentPlayer = 'O'; // let X be AI
-      statusText.textContent = "AI (X) is thinking...";
-      setTimeout(aiMakeMove, randomDelay());
-    } else {
-      currentPlayer = 'X';
-      statusText.textContent = "Player X's turn";
-    }
+    statusText.textContent = "Player X's turn";
   }
+}
 
   function onCellClick(e) {
     if (gameOver) return;
