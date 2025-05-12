@@ -1,7 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-  <head>
+<head>
   <meta charset="UTF-8">
   <title>Tic Tac Toe - Royal Edition</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -123,7 +122,6 @@
 </head>
 <body>
 
-
 <div class="container">
   <h1>Tic Tac Toe - Royal</h1>
   <div class="scoreboard">
@@ -183,31 +181,31 @@
   }
 
   // Restart the game
-restartBtn.addEventListener('click', () => {
-  initGame();
-});
-  
-// Initialize game
-function initGame() {
-  board.fill('');
-  gameOver = false;
-  currentPlayer = 'X';
-  cells.forEach(cell => {
-    cell.textContent = '';
-    cell.className = 'cell';
-    cell.removeAttribute('data-mark');
-    cell.addEventListener('click', onCellClick);  // Add click listener here
+  restartBtn.addEventListener('click', () => {
+    initGame();
   });
-  // If AI-first is checked, let AI (as X) make a random move
-  if (aiCheckbox.checked) {
-    currentPlayer = 'O'; // let X be AI
-    statusText.textContent = "AI (X) is thinking...";
-    setTimeout(aiMakeMove, randomDelay());
-  } else {
+  
+  // Initialize game
+  function initGame() {
+    board.fill('');
+    gameOver = false;
     currentPlayer = 'X';
-    statusText.textContent = "Player X's turn";
+    cells.forEach(cell => {
+      cell.textContent = '';
+      cell.className = 'cell';
+      cell.removeAttribute('data-mark');
+      cell.addEventListener('click', onCellClick);  // Add click listener here
+    });
+    // If AI-first is checked, let AI (as X) make a random move
+    if (aiCheckbox.checked) {
+      currentPlayer = 'O'; // let X be AI
+      statusText.textContent = "AI (X) is thinking...";
+      setTimeout(aiMakeMove, randomDelay());
+    } else {
+      currentPlayer = 'X';
+      statusText.textContent = "Player X's turn";
+    }
   }
-}
 
   function onCellClick(e) {
     if (gameOver) return;
@@ -342,12 +340,12 @@ function initGame() {
     return 500 + Math.random() * 500;
   }
 
+  // THE FIX: Initialize game on page load
+  initGame();
 </script>
-<div id="randomQuote" style="margin-top: 10px ; font-style: italic;
-  opacity: 0; transition: opacity is ease-in-out; text-align: center; ">
-  </div> 
 
-<div id="randomQuote"></div>
+<!-- [Rest of your HTML remains unchanged] -->
+<div id="randomQuote" style="margin-top: 10px; font-style: italic; opacity: 0; transition: opacity 1s ease-in-out; text-align: center;"></div>
   
 <!-- Compliment Form -->
 <div class="compliment-form">
@@ -453,7 +451,7 @@ function initGame() {
   
 <!-- Footer -->
 <p style="margin-top: 1rem; font-size: 0.85em; color: var(--accent-color); text-align: center; opacity: 0.8;">
-  Crafted with brilliance by <strong>RD</strong> — A Royal Experience
+  Crafted with brilliance by <strong>RD</strong>- A Royal Experience 
 </p>
   
 </body>
