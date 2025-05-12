@@ -346,7 +346,8 @@
   opacity: 0; transition: opacity is ease-in-out; text-align: center; ">
   </div> 
 
-
+<div id="randomQuote"></div>
+  
 <!-- Compliment Form -->
 <div class="compliment-form">
   <h2>Leave a Compliment</h2>
@@ -418,22 +419,34 @@
     "Rise up, for the world belongs to those who dare to climb."
   ];
 
-  window.addEventListener('load', () => {
-    const quoteDiv = document.getElementById('randomQuote');
+  function showRandomQuote() {
     const index = Math.floor(Math.random() * randomQuotes.length);
-    quoteDiv.textContent = randomQuotes[index];
+    const quoteText = randomQuotes[index];
+    const quoteDiv = document.getElementById('randomQuote');
+
+    quoteDiv.style.opacity = '0';
+
+    setTimeout(() => {
+      quoteDiv.textContent = quoteText;
+      quoteDiv.style.opacity = '1';
+    }, 500);
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const quoteDiv = document.getElementById('randomQuote');
+    quoteDiv.style.transition = 'opacity 1s ease-in-out';
     quoteDiv.style.padding = '10px 20px';
     quoteDiv.style.borderRadius = '25px';
     quoteDiv.style.background = 'rgba(255, 255, 255, 0.6)';
     quoteDiv.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
     quoteDiv.style.fontSize = '1.2em';
     quoteDiv.style.maxWidth = '80%';
-    quoteDiv.style.margin = '0 auto';
+    quoteDiv.style.margin = '1rem auto';
+    quoteDiv.style.textAlign = 'center';
     quoteDiv.style.opacity = '1';
 
-    setTimeout(() => {
-      quoteDiv.style.opacity = '0';
-    }, 5000);
+    showRandomQuote(); // First call
+    setInterval(showRandomQuote, 4000); // Repeat every 4s
   });
 </script>
   
