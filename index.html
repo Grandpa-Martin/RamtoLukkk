@@ -182,6 +182,11 @@
     osc.stop(audioCtx.currentTime + duration);
   }
 
+  // Restart the game
+restartBtn.addEventListener('click', () => {
+  initGame();
+});
+  
 // Initialize game
 function initGame() {
   board.fill('');
@@ -336,10 +341,6 @@ function initGame() {
   function randomDelay() {
     return 500 + Math.random() * 500;
   }
-
-  restartBtn.addEventListener('click', () => {
-    initGame();
-  });
 
 </script>
 <div id="randomQuote" style="margin-top: 10px ; font-style: italic;
