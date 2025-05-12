@@ -344,18 +344,71 @@
   // Theme toggle
 
   // Start the game
-  initGame();
 </script>
-  <p style="margin-top: 1rem; font-size: 0.85em; color: var(--accent-color); text-align: center; opacity: 0.8;">
-<p style="margin-top: 1rem; font-size: 0.85em; color: var(--accent-color); text-align: center; opacity: 0.8;">
-  Crafted with brilliance by <strong>RD</strong> — A Royal Experience
-</p>
 
+<!-- Inspire Me Button and Quote Display -->
 <div style="margin-top: 1rem; text-align: center;">
   <button onclick="showRandomQuote()">Inspire Me</button>
   <div id="randomQuote" style="margin-top: 10px; font-style: italic; opacity: 0; transition: opacity 1s ease-in-out;"></div>
 </div>
 
+<!-- Compliment Form -->
+<div class="compliment-form">
+  <h2>Leave a Compliment</h2>
+  <form action="https://getform.io/f/axowdjeb" method="POST">
+    <textarea name="message" placeholder="Your feedback..." required></textarea>
+    <input type="email" name="email" placeholder="Your email (optional)">
+    <button type="submit">Send Compliment</button>
+  </form>
+</div>
+
+<!-- Styles -->
+<style>
+  .compliment-form {
+    background: rgba(255,255,255,0.1);
+    padding: 1.2em;
+    border-radius: 20px;
+    margin: 2em auto;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .compliment-form h2 {
+    color: var(--accent-color);
+    margin-bottom: 0.5em;
+  }
+  .compliment-form textarea,
+  .compliment-form input[type="email"] {
+    width: 100%;
+    padding: 0.6em 0.8em;
+    margin-bottom: 0.8em;
+    border: none;
+    border-radius: 12px;
+    resize: vertical;
+    font-size: 0.95em;
+    outline: none;
+  }
+  .compliment-form textarea::placeholder,
+  .compliment-form input::placeholder {
+    color: rgba(0,0,0,0.5);
+  }
+  .compliment-form button {
+    padding: 0.6em 1.2em;
+    border: none;
+    border-radius: 20px;
+    background: var(--accent-color);
+    color: #111;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s;
+  }
+  .compliment-form button:hover {
+    background: #e0a800;
+    transform: translateY(-2px);
+  }
+</style>
+
+<!-- Quote Script -->
 <script>
   const randomQuotes = [
     "Conquer yourself and you conquer the world.",
@@ -373,28 +426,29 @@
   function showRandomQuote() {
     const index = Math.floor(Math.random() * randomQuotes.length);
     const quoteText = randomQuotes[index];
-
-    // Get the randomQuote div and set its content
     const quoteDiv = document.getElementById('randomQuote');
-    quoteDiv.textContent = quoteText;
 
-    // Apply styles for cylindrical box and fade-in effect
+    quoteDiv.textContent = quoteText;
     quoteDiv.style.padding = '10px 20px';
-    quoteDiv.style.borderRadius = '25px'; // Cylindrical box
-    quoteDiv.style.background = 'rgba(255, 255, 255, 0.6)'; // Light background
-    quoteDiv.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)'; // Slight shadow for depth
+    quoteDiv.style.borderRadius = '25px';
+    quoteDiv.style.background = 'rgba(255, 255, 255, 0.6)';
+    quoteDiv.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
     quoteDiv.style.fontSize = '1.2em';
     quoteDiv.style.maxWidth = '80%';
     quoteDiv.style.margin = '0 auto';
-    quoteDiv.style.transition = 'opacity 2s ease-in-out'; // Smooth fade-out effect
-
-    // Fade-in effect
     quoteDiv.style.opacity = '1';
 
-    // Set a timeout for fade-out after 5 seconds
     setTimeout(() => {
       quoteDiv.style.opacity = '0';
-    }, 5000); // Fade-out after 5 seconds
-  }
+    }, 5000);
+  }  
+<!-- Footer -->
+<p style="margin-top: 1rem; font-size: 0.85em; color: var(--accent-color); text-align: center; opacity: 0.8;">
+  Crafted with brilliance by <strong>RD</strong> — A Royal Experience
+</p>
+
+  
 </script>
+
+</body>
 </html>
