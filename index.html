@@ -2,151 +2,344 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <title>Tic Tac Toe - Royal Edition</title>
+  <title>Tic Tac Toe - Royal Deluxe</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* Basic reset and variables */
     :root {
-      --bg-color: #f0f4f8;
-      --panel-color: rgba(255, 255, 255, 0.3);
-      --text-color: #222;
-      --x-color: #D32F2F;
-      --o-color: #1976D2;
-      --accent-color: #FFC107;
-      --hover-color: rgba(255, 255, 255, 0.5);
+      --bg-color: #1a1a2e;
+      --panel-color: rgba(26, 26, 46, 0.8);
+      --text-color: #e6e6e6;
+      --x-color: #f05454;
+      --o-color: #6a67ce;
+      --accent-color: #ffd700;
+      --hover-color: rgba(255, 215, 0, 0.2);
+      --cell-bg: rgba(255, 255, 255, 0.1);
     }
-    [data-theme="dark"] {
-      --bg-color: #121212;
-      --panel-color: rgba(20, 20, 20, 0.4);
-      --text-color: #eef;
-      --accent-color: #FFD600;
+    [data-theme="light"] {
+      --bg-color: #f8f4e3;
+      --panel-color: rgba(248, 244, 227, 0.8);
+      --text-color: #333;
+      --x-color: #e74c3c;
+      --o-color: #3498db;
+      --accent-color: #e67e22;
+      --hover-color: rgba(230, 126, 34, 0.1);
+      --cell-bg: rgba(0, 0, 0, 0.05);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: var(--bg-color) url('https://source.unsplash.com/1600x900/?marble,royal') no-repeat center/cover;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: var(--bg-color) url('https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1792&q=80') no-repeat center/cover fixed;
+      font-family: 'Roboto', sans-serif;
       color: var(--text-color);
       display: flex; flex-direction: column; align-items: center;
       min-height: 100vh; padding: 1rem;
-      transition: background 0.5s;
+      transition: all 0.5s ease;
     }
     .container {
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       background: var(--panel-color);
-      border-radius: 20px;
-      padding: 20px;
-      width: 300px;
-      max-width: 90%;
-      box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 2rem;
+      animation: fadeIn 0.8s ease-out;
     }
     h1 {
-      font-size: 1.5em;
+      font-family: 'Cinzel Decorative', cursive;
+      font-size: 2.5rem;
       color: var(--accent-color);
-      margin-bottom: 0.5em;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      letter-spacing: 1px;
+    }
+    .subtitle {
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.8;
     }
     .scoreboard {
-      margin-bottom: 1em;
-      font-size: 0.9em;
-      letter-spacing: 0.5px;
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 1.5rem;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 0.8rem;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+    .score-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .score-value {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-top: 0.3rem;
     }
     .status {
-      margin: 0.5em 0 1em;
+      margin: 1rem 0;
+      font-size: 1.2rem;
       font-weight: bold;
+      min-height: 2rem;
+      padding: 0.5rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
     }
     #board {
       display: grid;
-      grid-template: repeat(3, 80px) / repeat(3, 80px);
-      gap: 5px;
-      margin: 0 auto 1em;
+      grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+      gap: 10px;
+      margin: 1rem auto;
+      aspect-ratio: 1/1;
+      width: 100%;
+      max-width: 400px;
     }
     .cell {
-      background: rgba(255, 255, 255, 0.4);
-      border-radius: 10px;
+      background: var(--cell-bg);
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.5em;
+      font-size: 3.5rem;
       cursor: pointer;
       position: relative;
-      transition: background 0.3s, transform 0.1s;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      aspect-ratio: 1/1;
     }
     .cell:hover {
       background: var(--hover-color);
-      transform: scale(1.05);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     }
-    .cell.disabled { cursor: default; }
-    .cell.x::before,
-    .cell.o::before {
-      content: attr(data-mark);
-      opacity: 0;
-      animation: fadeIn 0.3s forwards;
-    }
+    .cell.x { color: var(--x-color); }
+    .cell.o { color: var(--o-color); }
     .cell.win {
-      animation: glow 1s alternate infinite;
+      animation: glow 0.8s alternate infinite;
+      background: rgba(255, 215, 0, 0.2);
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.5); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    @keyframes glow {
-      0% { box-shadow: 0 0 10px var(--accent-color); }
-      100% { box-shadow: 0 0 20px var(--accent-color); }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
     }
     button {
-      margin: 0.5em 0.2em;
-      padding: 0.5em 1em;
+      padding: 0.8rem 1.5rem;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       background: var(--accent-color);
-      color: #fff;
-      font-size: 0.9em;
+      color: #222;
+      font-size: 1rem;
+      font-weight: bold;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      min-width: 120px;
     }
     button:hover {
-      background: #e0a800;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    .secondary-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
+    }
+    select, .checkbox-container {
+      padding: 0.8rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
+      border: none;
+      font-size: 1rem;
+    }
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
     #themeToggle {
-      position: absolute;
-      top: 10px; right: 10px;
-      background: none;
-      font-size: 0.9em;
-      color: var(--text-color);
-      opacity: 0.7;
+      position: fixed;
+      top: 20px; right: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 100;
     }
-    #themeToggle:hover { opacity: 1; }
+    #themeToggle:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: rotate(30deg);
+    }
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: var(--accent-color);
+      opacity: 0;
+      z-index: 999;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes glow {
+      0% { box-shadow: 0 0 15px var(--accent-color); }
+      100% { box-shadow: 0 0 30px var(--accent-color); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: var(--panel-color);
+      padding: 2rem;
+      border-radius: 16px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      animation: fadeIn 0.5s ease-out;
+    }
+    .trophy {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      color: var(--accent-color);
+      animation: bounce 1s infinite;
+    }
+    .how-to-play {
+      text-align: left;
+      margin-top: 2rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+    .how-to-play h3 {
+      margin-bottom: 0.5rem;
+      color: var(--accent-color);
+    }
+    .how-to-play ol {
+      padding-left: 1.5rem;
+    }
+    .how-to-play li {
+      margin-bottom: 0.5rem;
+    }
   </style>
 </head>
 <body>
+  <button id="themeToggle">🌓</button>
 
-<div class="container">
-  <h1>Tic Tac Toe - Royal</h1>
-  <div class="scoreboard">
-    X Wins: <span id="xWins">0</span> |
-    O Wins: <span id="oWins">0</span> |
-    Draws: <span id="draws">0</span>
+  <div class="container">
+    <h1>Tic Tac Toe</h1>
+    <div class="subtitle">Royal Deluxe Edition</div>
+    
+    <div class="scoreboard">
+      <div class="score-item">
+        <div>X Wins</div>
+        <div class="score-value" id="xWins">0</div>
+      </div>
+      <div class="score-item">
+        <div>O Wins</div>
+        <div class="score-value" id="oWins">0</div>
+      </div>
+      <div class="score-item">
+        <div>Draws</div>
+        <div class="score-value" id="draws">0</div>
+      </div>
+    </div>
+    
+    <div class="status" id="status">Player X's turn</div>
+    
+    <div id="board">
+      <div class="cell" data-index="0"></div>
+      <div class="cell" data-index="1"></div>
+      <div class="cell" data-index="2"></div>
+      <div class="cell" data-index="3"></div>
+      <div class="cell" data-index="4"></div>
+      <div class="cell" data-index="5"></div>
+      <div class="cell" data-index="6"></div>
+      <div class="cell" data-index="7"></div>
+      <div class="cell" data-index="8"></div>
+    </div>
+    
+    <div class="controls">
+      <select id="aiDifficulty">
+        <option value="minimax">Hard (Unbeatable)</option>
+        <option value="random">Easy (Random)</option>
+      </select>
+      <div class="checkbox-container">
+        <input type="checkbox" id="aiFirst">
+        <label for="aiFirst">AI First</label>
+      </div>
+    </div>
+    
+    <div class="controls">
+      <button id="restartBtn">Restart Game</button>
+      <button id="newGameBtn" class="secondary-btn">New Match</button>
+      <button id="howToPlayBtn" class="secondary-btn">How to Play</button>
+    </div>
   </div>
-  <div class="status" id="status">Player X's turn</div>
-  <div id="board">
-    <!-- 3x3 Cells -->
-    <div class="cell" data-index="0"></div>
-    <div class="cell" data-index="1"></div>
-    <div class="cell" data-index="2"></div>
-    <div class="cell" data-index="3"></div>
-    <div class="cell" data-index="4"></div>
-    <div class="cell" data-index="5"></div>
-    <div class="cell" data-index="6"></div>
-    <div class="cell" data-index="7"></div>
-    <div class="cell" data-index="8"></div>
+
+  <div id="winModal" class="modal">
+    <div class="modal-content">
+      <div class="trophy">🏆</div>
+      <h2 id="winMessage">X Wins!</h2>
+      <p id="winSubtext">The kingdom bows before your skill!</p>
+      <button id="closeModalBtn" style="margin-top: 1.5rem;">Continue</button>
+    </div>
   </div>
-  <button id="restartBtn">Restart</button>
-  <span style="margin-left:10px;">
-    <label>AI First: <input type="checkbox" id="aiFirst"></label>
-  </span>
-</div>
+
+  <div id="howToPlayModal" class="modal">
+    <div class="modal-content">
+      <h2>How to Play Royal Tic Tac Toe</h2>
+      <div class="how-to-play">
+        <h3>Game Rules:</h3>
+        <ol>
+          <li>Player X (You) and Player O (AI) take turns marking spaces</li>
+          <li>The first to get 3 marks in a row (horizontally, vertically, or diagonally) wins</li>
+          <li>If all squares are filled without a winner, the game is a draw</li>
+        </ol>
+        <h3>Features:</h3>
+        <ol>
+          <li>Choose between Easy (Random AI) and Hard (Unbeatable AI) difficulty</li>
+          <li>Let the AI go first for an extra challenge</li>
+          <li>Track your wins, losses, and draws</li>
+          <li>Enjoy immersive sound effects and animations</li>
+        </ol>
+      </div>
+      <button id="closeHowToPlayBtn" style="margin-top: 1.5rem;">Got It!</button>
+    </div>
+  </div>
+
+  <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3" preload="auto"></audio>
+  <audio id="winSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" preload="auto"></audio>
+  <audio id="drawSound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3" preload="auto"></audio>
+  <audio id="aiMoveSound" src="https://assets.mixkit.co/sfx/preview/mixkit-quick-jump-arcade-game-239.mp3" preload="auto"></audio>
 
 <script>
   // Game state variables
@@ -159,30 +352,42 @@
     [0,3,6],[1,4,7],[2,5,8],
     [0,4,8],[2,4,6]
   ];
+  
+  // DOM elements
   const cells = document.querySelectorAll('.cell');
   const statusText = document.getElementById('status');
   const xWinsText = document.getElementById('xWins');
   const oWinsText = document.getElementById('oWins');
   const drawsText = document.getElementById('draws');
   const restartBtn = document.getElementById('restartBtn');
+  const newGameBtn = document.getElementById('newGameBtn');
+  const howToPlayBtn = document.getElementById('howToPlayBtn');
   const aiCheckbox = document.getElementById('aiFirst');
-
-  // Audio context for click sounds
-  let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  function playBeep(freq, duration=0.15) {
-    let osc = audioCtx.createOscillator();
-    let gain = audioCtx.createGain();
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.type = 'square';
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
+  const aiDifficulty = document.getElementById('aiDifficulty');
+  const themeToggle = document.getElementById('themeToggle');
+  const winModal = document.getElementById('winModal');
+  const winMessage = document.getElementById('winMessage');
+  const winSubtext = document.getElementById('winSubtext');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  const howToPlayModal = document.getElementById('howToPlayModal');
+  const closeHowToPlayBtn = document.getElementById('closeHowToPlayBtn');
+  
+  // Audio elements
+  const clickSound = document.getElementById('clickSound');
+  const winSound = document.getElementById('winSound');
+  const drawSound = document.getElementById('drawSound');
+  const aiMoveSound = document.getElementById('aiMoveSound');
+  
+  // Sound effects
+  function playSound(sound) {
+    sound.currentTime = 0;
+    sound.play().catch(e => console.log("Audio play prevented:", e));
   }
-
-  // Restart the game
-  restartBtn.addEventListener('click', () => {
-    initGame();
+  
+  // Theme toggle
+  themeToggle.addEventListener('click', () => {
+    document.documentElement.setAttribute('data-theme', 
+      document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
   });
   
   // Initialize game
@@ -190,15 +395,15 @@
     board.fill('');
     gameOver = false;
     currentPlayer = 'X';
+    
     cells.forEach(cell => {
       cell.textContent = '';
       cell.className = 'cell';
-      cell.removeAttribute('data-mark');
-      cell.addEventListener('click', onCellClick);  // Add click listener here
+      cell.addEventListener('click', onCellClick);
     });
-    // If AI-first is checked, let AI (as X) make a random move
+    
     if (aiCheckbox.checked) {
-      currentPlayer = 'O'; // let X be AI
+      currentPlayer = 'O';
       statusText.textContent = "AI (X) is thinking...";
       setTimeout(aiMakeMove, randomDelay());
     } else {
@@ -206,57 +411,76 @@
       statusText.textContent = "Player X's turn";
     }
   }
-
+  
+  // Cell click handler
   function onCellClick(e) {
     if (gameOver) return;
+    
     const idx = e.target.getAttribute('data-index');
-    if (board[idx] !== '' ) return;
-    // First click should resume audio context for some browsers
-    audioCtx.resume();
+    if (board[idx] !== '') return;
+    
+    playSound(clickSound);
     placeMark(idx, 'X');
-    playBeep(330); // click sound
     checkGameEnd();
+    
     if (!gameOver) {
       currentPlayer = 'O';
       statusText.textContent = "AI is thinking...";
       setTimeout(aiMakeMove, randomDelay());
     }
   }
-
+  
+  // AI move logic
   function aiMakeMove() {
     if (gameOver) return;
-    // Minimax to find best move for O
-    let bestScore = Infinity, move = null;
-    for (let i = 0; i < 9; i++) {
-      if (board[i] === '') {
-        board[i] = 'O';
-        let score = minimax(board, 0, true);
-        board[i] = '';
-        if (score < bestScore) {
-          bestScore = score;
-          move = i;
+    
+    let move;
+    if (aiDifficulty.value === 'random') {
+      // Random move for easy mode
+      const emptyCells = [];
+      for (let i = 0; i < 9; i++) {
+        if (board[i] === '') emptyCells.push(i);
+      }
+      move = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    } else {
+      // Minimax for hard mode
+      let bestScore = Infinity;
+      for (let i = 0; i < 9; i++) {
+        if (board[i] === '') {
+          board[i] = 'O';
+          let score = minimax(board, 0, true);
+          board[i] = '';
+          if (score < bestScore) {
+            bestScore = score;
+            move = i;
+          }
         }
       }
     }
-    if (move !== null) {
-      placeMark(move, 'O');
-      playBeep(440); // AI move sound
-    }
-    checkGameEnd();
-    if (!gameOver) {
-      currentPlayer = 'X';
-      statusText.textContent = "Player X's turn";
+    
+    if (move !== undefined) {
+      setTimeout(() => {
+        playSound(aiMoveSound);
+        placeMark(move, 'O');
+        checkGameEnd();
+        if (!gameOver) {
+          currentPlayer = 'X';
+          statusText.textContent = "Player X's turn";
+        }
+      }, 500);
     }
   }
-
+  
+  // Place mark on board
   function placeMark(idx, mark) {
     board[idx] = mark;
     const cell = document.querySelector(`.cell[data-index='${idx}']`);
-    cell.setAttribute('data-mark', mark);
+    cell.textContent = mark;
     cell.classList.add(mark.toLowerCase());
     cell.removeEventListener('click', onCellClick);
   }
-
+  
+  // Check game status
   function checkGameEnd() {
     // Check for win
     let winner = null;
@@ -264,44 +488,52 @@
       const [a,b,c] = pattern;
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
         winner = board[a];
-        // highlight winning cells
+        // Highlight winning cells
         document.querySelector(`.cell[data-index='${a}']`).classList.add('win');
         document.querySelector(`.cell[data-index='${b}']`).classList.add('win');
         document.querySelector(`.cell[data-index='${c}']`).classList.add('win');
       }
     });
+    
     if (winner) {
       gameOver = true;
       if (winner === 'X') {
         xWins++;
         xWinsText.textContent = xWins;
+        winMessage.textContent = "You Win!";
+        winSubtext.textContent = "The kingdom bows before your skill!";
+        playSound(winSound);
       } else {
         oWins++;
         oWinsText.textContent = oWins;
+        winMessage.textContent = "AI Wins!";
+        winSubtext.textContent = "The royal court favors the machine!";
+        playSound(winSound);
       }
-      statusText.textContent = `${winner} wins!`;
-      playBeep(600, 0.3); // win sound
+      createConfetti();
+      setTimeout(() => winModal.style.display = 'flex', 1000);
       return;
     }
+    
     // Check for draw
     if (!board.includes('')) {
       gameOver = true;
       draws++;
       drawsText.textContent = draws;
-      statusText.textContent = "It's a draw!";
-      playBeep(500, 0.2); // draw sound
-      return;
+      winMessage.textContent = "It's a Draw!";
+      winSubtext.textContent = "The battle remains unresolved!";
+      playSound(drawSound);
+      setTimeout(() => winModal.style.display = 'flex', 500);
     }
   }
-
-  // Minimax algorithm: returns score for 'X' (maximizer) perspective
+  
+  // Minimax algorithm
   function minimax(boardState, depth, isMaximizing) {
-    // Check terminal states
     const win = checkWinner(boardState);
     if (win === 'X') return 10 - depth;
     if (win === 'O') return depth - 10;
-    if (!boardState.includes('')) return 0; // draw
-
+    if (!boardState.includes('')) return 0;
+    
     if (isMaximizing) {
       let best = -Infinity;
       for (let i = 0; i < 9; i++) {
@@ -324,8 +556,8 @@
       return best;
     }
   }
-
-  // Check for a winner (for minimax)
+  
+  // Check winner for minimax
   function checkWinner(bd) {
     for (let pattern of winPatterns) {
       const [a,b,c] = pattern;
@@ -335,124 +567,70 @@
     }
     return null;
   }
-
+  
+  // Helper functions
   function randomDelay() {
     return 500 + Math.random() * 500;
   }
-
-  // THE FIX: Initialize game on page load
+  
+  function createConfetti() {
+    const colors = ['#ffd700', '#f05454', '#6a67ce', '#ffffff'];
+    for (let i = 0; i < 100; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.width = Math.random() * 10 + 5 + 'px';
+      confetti.style.height = Math.random() * 10 + 5 + 'px';
+      document.body.appendChild(confetti);
+      
+      const animationDuration = Math.random() * 3 + 2;
+      confetti.style.animation = `fall ${animationDuration}s linear forwards`;
+      
+      setTimeout(() => {
+        confetti.remove();
+      }, animationDuration * 1000);
+    }
+    
+    // Add CSS animation for confetti
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fall {
+        0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Event listeners
+  restartBtn.addEventListener('click', initGame);
+  
+  newGameBtn.addEventListener('click', () => {
+    xWins = 0;
+    oWins = 0;
+    draws = 0;
+    xWinsText.textContent = '0';
+    oWinsText.textContent = '0';
+    drawsText.textContent = '0';
+    initGame();
+  });
+  
+  howToPlayBtn.addEventListener('click', () => {
+    howToPlayModal.style.display = 'flex';
+  });
+  
+  closeModalBtn.addEventListener('click', () => {
+    winModal.style.display = 'none';
+    initGame();
+  });
+  
+  closeHowToPlayBtn.addEventListener('click', () => {
+    howToPlayModal.style.display = 'none';
+  });
+  
+  // Initialize the game
   initGame();
 </script>
-
-<!-- [Rest of your HTML remains unchanged] -->
-<div id="randomQuote" style="margin-top: 10px; font-style: italic; opacity: 0; transition: opacity 1s ease-in-out; text-align: center;"></div>
-  
-<!-- Compliment Form -->
-<div class="compliment-form">
-  <h2>Leave a Compliment</h2>
-  <form action="https://getform.io/f/axowdjeb" method="POST">
-    <textarea name="message" placeholder="Your feedback..." required></textarea>
-    <input type="email" name="email" placeholder="Your email (optional)">
-    <button type="submit">Send Compliment</button>
-  </form>
-</div>
-
-<!-- Styles -->
-<style>
-  .compliment-form {
-    background: rgba(255,255,255,0.1);
-    padding: 1.2em;
-    border-radius: 20px;
-    margin: 2em auto;
-    max-width: 320px;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  }
-  .compliment-form h2 {
-    color: var(--accent-color);
-    margin-bottom: 0.5em;
-  }
-  .compliment-form textarea,
-  .compliment-form input[type="email"] {
-    width: 100%;
-    padding: 0.6em 0.8em;
-    margin-bottom: 0.8em;
-    border: none;
-    border-radius: 12px;
-    resize: vertical;
-    font-size: 0.95em;
-    outline: none;
-  }
-  .compliment-form textarea::placeholder,
-  .compliment-form input::placeholder {
-    color: rgba(0,0,0,0.5);
-  }
-  .compliment-form button {
-    padding: 0.6em 1.2em;
-    border: none;
-    border-radius: 20px;
-    background: var(--accent-color);
-    color: #111;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.1s;
-  }
-  .compliment-form button:hover {
-    background: #e0a800;
-    transform: translateY(-2px);
-  }
-</style>
-
-<!-- Quote Script -->
-<script>
-  const randomQuotes = [
-    "Conquer yourself and you conquer the world.",
-    "In the midst of chaos, there is also opportunity.",
-    "The crown is heavy only for the unworthy.",
-    "Every master was once a beginner.",
-    "The only limits that exist are the ones you place on yourself.",
-    "Victory belongs to the most persevering.",
-    "Fortune favors the bold, but it rewards the relentless.",
-    "Fear is a liar; the only true enemy is doubt.",
-    "The strongest steel is forged in the hottest fire.",
-    "Rise up, for the world belongs to those who dare to climb."
-  ];
-
-  function showRandomQuote() {
-    const index = Math.floor(Math.random() * randomQuotes.length);
-    const quoteText = randomQuotes[index];
-    const quoteDiv = document.getElementById('randomQuote');
-
-    quoteDiv.style.opacity = '0';
-
-    setTimeout(() => {
-      quoteDiv.textContent = quoteText;
-      quoteDiv.style.opacity = '1';
-    }, 500);
-  }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const quoteDiv = document.getElementById('randomQuote');
-    quoteDiv.style.transition = 'opacity 1s ease-in-out';
-    quoteDiv.style.padding = '10px 20px';
-    quoteDiv.style.borderRadius = '25px';
-    quoteDiv.style.background = 'rgba(255, 255, 255, 0.6)';
-    quoteDiv.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
-    quoteDiv.style.fontSize = '1.2em';
-    quoteDiv.style.maxWidth = '80%';
-    quoteDiv.style.margin = '1rem auto';
-    quoteDiv.style.textAlign = 'center';
-    quoteDiv.style.opacity = '1';
-
-    showRandomQuote(); // First call
-    setInterval(showRandomQuote, 4000); // Repeat every 4s
-  });
-</script>
-  
-<!-- Footer -->
-<p style="margin-top: 1rem; font-size: 0.85em; color: var(--accent-color); text-align: center; opacity: 0.8;">
-  Crafted with brilliance by <strong>RD</strong>- A Royal Experience 
-</p>
-  
 </body>
 </html>
