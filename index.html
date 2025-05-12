@@ -390,26 +390,96 @@
     localStorage.setItem("winStreak", winStreak);
     alert(`Current Win Streak: ${winStreak}`);
   }
-</script><!-- ENHANCEMENT 6: AI Difficulty --><select id="difficulty">
-  <option value="easy">Easy</option>
-  <option value="medium">Medium</option>
-  <option value="hard">Hard</option>
-</select>
+<!-- Difficulty Selector and Quote Section -->
+<div class="difficulty-container">
+  <div class="difficulty-box">
+    <label for="difficulty">Choose Difficulty:</label>
+    <select id="difficulty">
+      <option value="easy">Easy</option>
+      <option value="medium" selected>Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+  </div>
+
+  <div class="quote-box" id="quoteBox">
+    “Victory is reserved for those who are willing to pay its price.”
+  </div>
+</div>
+
+<style>
+.difficulty-container {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.difficulty-box {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px 20px;
+  border-radius: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  font-weight: 600;
+  font-size: 0.95em;
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.difficulty-box select {
+  margin-top: 8px;
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: var(--text-color);
+  font-weight: bold;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.difficulty-box select:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.quote-box {
+  font-style: italic;
+  font-size: 1.1rem;
+  text-align: center;
+  max-width: 90%;
+  background: rgba(255, 255, 255, 0.08);
+  border-left: 4px solid #FFD700;
+  border-radius: 18px;
+  padding: 12px 18px;
+  color: var(--text-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+</style>
+
 <script>
-  function aiMoveWithDifficulty() {
-    const level = document.getElementById('difficulty').value;
-    // Adjust AI logic based on level
-  }
-</script><!-- ENHANCEMENT 7: Easter Egg --><script>
-  document.body.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.key === 'G') alert("God Mode Activated!");
-  });
-</script><!-- ENHANCEMENT 8: Rotating Quotes --><div id="quote" style="margin-top:10px; font-style:italic;"></div>
-<script>
-  const quotes = [
-    "Victory belongs to the most tenacious. – Napoleon",
-    "A crown is merely a hat that lets the rain in. – Frederick the Great",
-    "Tactics without strategy is the noise before defeat."
+const quotes = [
+  "Victory is reserved for those who are willing to pay its price. – Sun Tzu",
+  "You learn more from losing than winning. You learn how to keep going. – Morgan Wootten",
+  "Success is not final, failure is not fatal: It is the courage to continue that counts. – Winston Churchill",
+  "The greatest test of courage on earth is to bear defeat without losing heart. – R.G. Ingersoll",
+  "Winners are not afraid of losing. But losers are. – Robert Kiyosaki",
+  "Every champion was once a contender that refused to give up. – Rocky Balboa",
+  "In every game, you either win or you learn. – Anonymous",
+  "A true champion is not judged by how they win, but how they recover from defeat. – Serena Williams"
+];
+
+function displayRandomQuote() {
+  const quoteBox = document.getElementById('quoteBox');
+  const randomIndex = Math.floor(Math.random() * quotes.length);
+  quoteBox.innerText = `“${quotes[randomIndex]}”`;
+}
+
+window.onload = displayRandomQuote;
+</script>
   ];
   let qIndex = 0;
   setInterval(() => {
@@ -418,8 +488,6 @@
 </script><!-- ENHANCEMENT 9: Royal Seal --><div style="position: fixed; top: 10px; left: 10px; font-weight: bold;">
   <img src="rd-logo.png" alt="RD Logo" style="width: 50px;">
 </div>
-  // Start the game
-  initGame();
 </script>
   <p style="margin-top: 1rem; font-size: 0.85em; color: var(--accent-color); text-align: center; opacity: 0.8;">
   Crafted with brilliance by <strong>RD</strong> — A Royal Experience
