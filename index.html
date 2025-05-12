@@ -344,12 +344,10 @@
   // Theme toggle
 
 </script>
+<div id="randomQuote" style="margin-top: 10px ; font-style: italic;
+  opacity: 0; transition: opacity is ease-in-out; text-align: center; ">
+  </div> 
 
-<!-- Inspire Me Button and Quote Display -->
-<div style="margin-top: 1rem; text-align: center;">
-  <button onclick="showRandomQuote()">Inspire Me</button>
-  <div id="randomQuote" style="margin-top: 10px; font-style: italic; opacity: 0; transition: opacity 1s ease-in-out;"></div>
-</div>
 
 <!-- Compliment Form -->
 <div class="compliment-form">
@@ -422,12 +420,10 @@
     "Rise up, for the world belongs to those who dare to climb."
   ];
 
-  function showRandomQuote() {
-    const index = Math.floor(Math.random() * randomQuotes.length);
-    const quoteText = randomQuotes[index];
+  window.addEventListener('load', () => {
     const quoteDiv = document.getElementById('randomQuote');
-
-    quoteDiv.textContent = quoteText;
+    const index = Math.floor(Math.random() * randomQuotes.length);
+    quoteDiv.textContent = randomQuotes[index];
     quoteDiv.style.padding = '10px 20px';
     quoteDiv.style.borderRadius = '25px';
     quoteDiv.style.background = 'rgba(255, 255, 255, 0.6)';
@@ -440,7 +436,7 @@
     setTimeout(() => {
       quoteDiv.style.opacity = '0';
     }, 5000);
-  }
+  });
 </script>
 
 </body>
