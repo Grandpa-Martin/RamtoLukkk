@@ -2,576 +2,151 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <title>Tic Tac Toe - Imperial Edition</title>
+  <title>Tic Tac Toe - Royal Edition</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
   <style>
+    /* Basic reset and variables */
     :root {
-      --bg-color: #0a0a0a;
-      --panel-color: rgba(20, 20, 20, 0.7);
-      --text-color: #e6e6e6;
-      --x-color: #d4af37; /* Gold */
-      --o-color: #b9f2ff; /* Diamond */
-      --accent-color: #d4af37;
-      --hover-color: rgba(212, 175, 55, 0.2);
-      --cell-bg: rgba(255, 255, 255, 0.05);
-      --gold-gradient: linear-gradient(135deg, #d4af37 0%, #f9d423 50%, #d4af37 100%);
+      --bg-color: #f0f4f8;
+      --panel-color: rgba(255, 255, 255, 0.3);
+      --text-color: #222;
+      --x-color: #D32F2F;
+      --o-color: #1976D2;
+      --accent-color: #FFC107;
+      --hover-color: rgba(255, 255, 255, 0.5);
     }
-    
-    [data-theme="light"] {
-      --bg-color: #f5f5f5;
-      --panel-color: rgba(245, 245, 245, 0.9);
-      --text-color: #333;
-      --x-color: #d4af37;
-      --o-color: #0077b6;
-      --accent-color: #d4af37;
-      --hover-color: rgba(212, 175, 55, 0.1);
-      --cell-bg: rgba(0, 0, 0, 0.03);
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --panel-color: rgba(20, 20, 20, 0.4);
+      --text-color: #eef;
+      --accent-color: #FFD600;
     }
-    
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    
     body {
-      background: 
-        radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%),
-        var(--bg-color) url('https://images.unsplash.com/photo-1600566752229-250ed79470b9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3840&q=80') no-repeat center/cover fixed;
-      font-family: 'Playfair Display', serif;
+      background: var(--bg-color) url('https://source.unsplash.com/1600x900/?marble,royal') no-repeat center/cover;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
       color: var(--text-color);
-      display: flex; 
-      flex-direction: column; 
-      align-items: center;
-      min-height: 100vh; 
-      padding: 1rem;
-      transition: all 0.5s ease;
-      overflow-x: hidden;
+      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh; padding: 1rem;
+      transition: background 0.5s;
     }
-    
     .container {
-      backdrop-filter: blur(16px) brightness(0.8);
-      -webkit-backdrop-filter: blur(16px) brightness(0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       background: var(--panel-color);
       border-radius: 20px;
-      padding: 2.5rem;
-      width: 100%;
-      max-width: 500px;
-      box-shadow: 
-        0 0 30px rgba(212, 175, 55, 0.3),
-        0 8px 60px rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      width: 300px;
+      max-width: 90%;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.1);
       text-align: center;
-      border: 1px solid rgba(212, 175, 55, 0.2);
-      margin-top: 3rem;
-      animation: fadeIn 1s ease-out;
-      position: relative;
-      overflow: hidden;
     }
-    
-    .container::before {
-      content: "";
-      position: absolute;
-      top: -2px; left: -2px; right: -2px; bottom: -2px;
-      border-radius: 22px;
-      background: var(--gold-gradient);
-      z-index: -1;
-      opacity: 0.3;
-    }
-    
     h1 {
-      font-family: 'Cinzel Decorative', cursive;
-      font-size: 2.8rem;
+      font-size: 1.5em;
       color: var(--accent-color);
-      margin-bottom: 0.5rem;
-      text-shadow: 
-        0 0 10px rgba(212, 175, 55, 0.5),
-        2px 2px 4px rgba(0, 0, 0, 0.5);
-      letter-spacing: 2px;
-      position: relative;
-      display: inline-block;
+      margin-bottom: 0.5em;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     }
-    
-    h1::after {
-      content: "";
-      position: absolute;
-      bottom: -10px;
-      left: 25%;
-      width: 50%;
-      height: 2px;
-      background: var(--gold-gradient);
-      border-radius: 2px;
-    }
-    
-    .subtitle {
-      font-size: 1rem;
-      margin-bottom: 2rem;
-      opacity: 0.8;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    
     .scoreboard {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 2rem;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 1rem;
-      border-radius: 12px;
-      font-size: 1rem;
-      border: 1px solid rgba(212, 175, 55, 0.1);
-      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
-    }
-    
-    .score-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex: 1;
-    }
-    
-    .score-value {
-      font-size: 1.6rem;
-      font-weight: bold;
-      margin-top: 0.5rem;
-      background: var(--gold-gradient);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
-    }
-    
-    .status {
-      margin: 1.5rem 0;
-      font-size: 1.3rem;
-      font-weight: bold;
-      min-height: 2.5rem;
-      padding: 0.8rem;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 10px;
-      border: 1px solid rgba(212, 175, 55, 0.1);
+      margin-bottom: 1em;
+      font-size: 0.9em;
       letter-spacing: 0.5px;
     }
-    
+    .status {
+      margin: 0.5em 0 1em;
+      font-weight: bold;
+    }
     #board {
       display: grid;
-      grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-      gap: 12px;
-      margin: 2rem auto;
-      aspect-ratio: 1/1;
-      width: 100%;
-      max-width: 400px;
+      grid-template: repeat(3, 80px) / repeat(3, 80px);
+      gap: 5px;
+      margin: 0 auto 1em;
     }
-    
     .cell {
-      background: var(--cell-bg);
-      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 4rem;
+      font-size: 2.5em;
       cursor: pointer;
       position: relative;
-      transition: all 0.3s ease;
-      box-shadow: 
-        0 4px 15px rgba(0, 0, 0, 0.2),
-        inset 0 0 15px rgba(212, 175, 55, 0.1);
-      aspect-ratio: 1/1;
-      border: 1px solid rgba(212, 175, 55, 0.1);
+      transition: background 0.3s, transform 0.1s;
     }
-    
     .cell:hover {
       background: var(--hover-color);
-      transform: translateY(-5px);
-      box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.3),
-        inset 0 0 15px rgba(212, 175, 55, 0.2);
+      transform: scale(1.05);
     }
-    
-    .cell.x { 
-      color: var(--x-color);
-      text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-    }
-    
-    .cell.o { 
-      color: var(--o-color);
-      text-shadow: 0 0 15px rgba(185, 242, 255, 0.5);
-    }
-    
-    .cell.win {
-      animation: glow 0.8s alternate infinite;
-      background: rgba(212, 175, 55, 0.2);
-      box-shadow: 
-        0 0 30px rgba(212, 175, 55, 0.5),
-        inset 0 0 15px rgba(212, 175, 55, 0.3);
-    }
-    
-    .controls {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin: 2rem 0;
-      flex-wrap: wrap;
-    }
-    
-    button {
-      padding: 1rem 2rem;
-      border: none;
-      border-radius: 10px;
-      background: var(--gold-gradient);
-      color: #222;
-      font-size: 1.1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 
-        0 4px 15px rgba(0, 0, 0, 0.3),
-        0 0 10px rgba(212, 175, 55, 0.3);
-      min-width: 160px;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-    }
-    
-    button::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(rgba(255,255,255,0.2), transparent);
-      z-index: -1;
-    }
-    
-    button:hover {
-      transform: translateY(-3px);
-      box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.4),
-        0 0 15px rgba(212, 175, 55, 0.5);
-    }
-    
-    button:active {
-      transform: translateY(0);
-    }
-    
-    .secondary-btn {
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text-color);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-    
-    .secondary-btn:hover {
-      background: rgba(212, 175, 55, 0.1);
-    }
-    
-    select, .checkbox-container {
-      padding: 1rem;
-      border-radius: 10px;
-      background: rgba(0, 0, 0, 0.3);
-      color: var(--text-color);
-      border: 1px solid rgba(212, 175, 55, 0.2);
-      font-size: 1rem;
-      backdrop-filter: blur(5px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-    
-    select {
-      appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d4af37'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-      background-repeat: no-repeat;
-      background-position: right 1rem center;
-      background-size: 1rem;
-      padding-right: 3rem;
-    }
-    
-    .checkbox-container {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem 1.5rem;
-    }
-    
-    input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      accent-color: var(--accent-color);
-    }
-    
-    #themeToggle {
-      position: fixed;
-      top: 25px; 
-      right: 25px;
-      background: rgba(0, 0, 0, 0.3);
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      z-index: 100;
-      border: 1px solid rgba(212, 175, 55, 0.2);
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-    }
-    
-    #themeToggle:hover {
-      background: rgba(212, 175, 55, 0.1);
-      transform: rotate(30deg) scale(1.1);
-    }
-    
-    .confetti {
-      position: fixed;
-      width: 15px;
-      height: 15px;
-      background-color: var(--accent-color);
+    .cell.disabled { cursor: default; }
+    .cell.x::before,
+    .cell.o::before {
+      content: attr(data-mark);
       opacity: 0;
-      z-index: 999;
-      pointer-events: none;
+      animation: fadeIn 0.3s forwards;
     }
-    
-    .diamond {
-      background: linear-gradient(45deg, #b9f2ff 0%, #7ec4ff 50%, #b9f2ff 100%);
+    .cell.win {
+      animation: glow 1s alternate infinite;
     }
-    
-    .gold {
-      background: var(--gold-gradient);
-    }
-    
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
     }
-    
     @keyframes glow {
-      0% { 
-        box-shadow: 
-          0 0 20px rgba(212, 175, 55, 0.5),
-          inset 0 0 15px rgba(212, 175, 55, 0.3);
-      }
-      100% { 
-        box-shadow: 
-          0 0 40px rgba(212, 175, 55, 0.8),
-          inset 0 0 25px rgba(212, 175, 55, 0.5);
-      }
+      0% { box-shadow: 0 0 10px var(--accent-color); }
+      100% { box-shadow: 0 0 20px var(--accent-color); }
     }
-    
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
+    button {
+      margin: 0.5em 0.2em;
+      padding: 0.5em 1em;
+      border: none;
+      border-radius: 5px;
+      background: var(--accent-color);
+      color: #fff;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: background 0.3s;
     }
-    
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(5deg); }
+    button:hover {
+      background: #e0a800;
     }
-    
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(10px);
-    }
-    
-    .modal-content {
-      background: rgba(20, 20, 20, 0.95);
-      padding: 3rem;
-      border-radius: 20px;
-      max-width: 500px;
-      width: 90%;
-      text-align: center;
-      animation: fadeIn 0.5s ease-out;
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      box-shadow: 
-        0 0 50px rgba(212, 175, 55, 0.3),
-        0 0 100px rgba(0, 0, 0, 0.5);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .modal-content::before {
-      content: "";
+    #themeToggle {
       position: absolute;
-      top: -2px; left: -2px; right: -2px; bottom: -2px;
-      border-radius: 22px;
-      background: var(--gold-gradient);
-      z-index: -1;
-      opacity: 0.3;
+      top: 10px; right: 10px;
+      background: none;
+      font-size: 0.9em;
+      color: var(--text-color);
+      opacity: 0.7;
     }
-    
-    .trophy {
-      font-size: 5rem;
-      margin-bottom: 1.5rem;
-      color: var(--accent-color);
-      animation: float 3s ease-in-out infinite;
-      text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-    }
-    
-    .modal h2 {
-      font-family: 'Cinzel Decorative', cursive;
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      color: var(--accent-color);
-      letter-spacing: 1px;
-    }
-    
-    .modal p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-      line-height: 1.6;
-    }
-    
-    .how-to-play {
-      text-align: left;
-      margin-top: 2rem;
-      padding: 1.5rem;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 15px;
-      border: 1px solid rgba(212, 175, 55, 0.1);
-    }
-    
-    .how-to-play h3 {
-      margin-bottom: 1rem;
-      color: var(--accent-color);
-      font-family: 'Cinzel Decorative', cursive;
-      font-size: 1.3rem;
-    }
-    
-    .how-to-play ol {
-      padding-left: 1.5rem;
-    }
-    
-    .how-to-play li {
-      margin-bottom: 0.8rem;
-      line-height: 1.5;
-    }
-    
-    @media (max-width: 600px) {
-      .container {
-        padding: 1.5rem;
-        margin-top: 1.5rem;
-      }
-      
-      h1 {
-        font-size: 2rem;
-      }
-      
-      #board {
-        max-width: 300px;
-      }
-      
-      .cell {
-        font-size: 3rem;
-      }
-      
-      .controls {
-        flex-direction: column;
-        gap: 1rem;
-      }
-      
-      button, select, .checkbox-container {
-        width: 100%;
-      }
-    }
+    #themeToggle:hover { opacity: 1; }
   </style>
 </head>
 <body>
-  <button id="themeToggle">🌓</button>
 
-  <div class="container">
-    <h1>Tic Tac Toe</h1>
-    <div class="subtitle">Imperial Edition</div>
-    
-    <div class="scoreboard">
-      <div class="score-item">
-        <div>X Wins</div>
-        <div class="score-value" id="xWins">0</div>
-      </div>
-      <div class="score-item">
-        <div>O Wins</div>
-        <div class="score-value" id="oWins">0</div>
-      </div>
-      <div class="score-item">
-        <div>Draws</div>
-        <div class="score-value" id="draws">0</div>
-      </div>
-    </div>
-    
-    <div class="status" id="status">Player X's turn</div>
-    
-    <div id="board">
-      <div class="cell" data-index="0"></div>
-      <div class="cell" data-index="1"></div>
-      <div class="cell" data-index="2"></div>
-      <div class="cell" data-index="3"></div>
-      <div class="cell" data-index="4"></div>
-      <div class="cell" data-index="5"></div>
-      <div class="cell" data-index="6"></div>
-      <div class="cell" data-index="7"></div>
-      <div class="cell" data-index="8"></div>
-    </div>
-    
-    <div class="controls">
-      <select id="aiDifficulty">
-        <option value="minimax">Imperial (Unbeatable)</option>
-        <option value="random">Noble (Random)</option>
-      </select>
-      <div class="checkbox-container">
-        <input type="checkbox" id="aiFirst">
-        <label for="aiFirst">AI First Move</label>
-      </div>
-    </div>
-    
-    <div class="controls">
-      <button id="restartBtn">Restart Game</button>
-      <button id="newGameBtn" class="secondary-btn">New Match</button>
-      <button id="howToPlayBtn" class="secondary-btn">Imperial Rules</button>
-    </div>
+<div class="container">
+  <h1>Tic Tac Toe - Royal</h1>
+  <div class="scoreboard">
+    X Wins: <span id="xWins">0</span> |
+    O Wins: <span id="oWins">0</span> |
+    Draws: <span id="draws">0</span>
   </div>
-
-  <div id="winModal" class="modal">
-    <div class="modal-content">
-      <div class="trophy">🏆</div>
-      <h2 id="winMessage">X Wins!</h2>
-      <p id="winSubtext">The kingdom bows before your skill!</p>
-      <button id="closeModalBtn">Continue</button>
-    </div>
+  <div class="status" id="status">Player X's turn</div>
+  <div id="board">
+    <!-- 3x3 Cells -->
+    <div class="cell" data-index="0"></div>
+    <div class="cell" data-index="1"></div>
+    <div class="cell" data-index="2"></div>
+    <div class="cell" data-index="3"></div>
+    <div class="cell" data-index="4"></div>
+    <div class="cell" data-index="5"></div>
+    <div class="cell" data-index="6"></div>
+    <div class="cell" data-index="7"></div>
+    <div class="cell" data-index="8"></div>
   </div>
-
-  <div id="howToPlayModal" class="modal">
-    <div class="modal-content">
-      <h2>Imperial Tic Tac Toe Rules</h2>
-      <div class="how-to-play">
-        <h3>Game Rules:</h3>
-        <ol>
-          <li>Player X (Your Imperial Majesty) and Player O (The Royal AI) take turns marking spaces</li>
-          <li>The first to claim 3 thrones in a row (horizontally, vertically, or diagonally) wins the crown</li>
-          <li>If all thrones are claimed without a victor, the game ends in a royal truce</li>
-        </ol>
-        <h3>Imperial Features:</h3>
-        <ol>
-          <li><strong>Noble Mode:</strong> The AI makes random moves (for a gentler challenge)</li>
-          <li><strong>Imperial Mode:</strong> The AI uses royal strategy (nearly unbeatable)</li>
-          <li>Let the AI take the first move for a true test of your strategic prowess</li>
-          <li>Track your royal victories, defeats, and truces</li>
-          <li>Enjoy a truly imperial gaming experience with gold and diamond accents</li>
-        </ol>
-      </div>
-      <button id="closeHowToPlayBtn">I Accept These Terms</button>
-    </div>
-  </div>
-
-  <!-- Luxury Sound Effects -->
-  <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3" preload="auto"></audio>
-  <audio id="winSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" preload="auto"></audio>
-  <audio id="drawSound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3" preload="auto"></audio>
-  <audio id="aiMoveSound" src="https://assets.mixkit.co/sfx/preview/mixkit-quick-jump-arcade-game-239.mp3" preload="auto"></audio>
-  <audio id="ambientSound" src="https://assets.mixkit.co/music/preview/mixkit-medieval-show-fanfare-1169.mp3" loop preload="auto"></audio>
+  <button id="restartBtn">Restart</button>
+  <span style="margin-left:10px;">
+    <label>AI First: <input type="checkbox" id="aiFirst"></label>
+  </span>
+</div>
 
 <script>
   // Game state variables
@@ -584,50 +159,30 @@
     [0,3,6],[1,4,7],[2,5,8],
     [0,4,8],[2,4,6]
   ];
-  
-  // DOM elements
   const cells = document.querySelectorAll('.cell');
   const statusText = document.getElementById('status');
   const xWinsText = document.getElementById('xWins');
   const oWinsText = document.getElementById('oWins');
   const drawsText = document.getElementById('draws');
   const restartBtn = document.getElementById('restartBtn');
-  const newGameBtn = document.getElementById('newGameBtn');
-  const howToPlayBtn = document.getElementById('howToPlayBtn');
   const aiCheckbox = document.getElementById('aiFirst');
-  const aiDifficulty = document.getElementById('aiDifficulty');
-  const themeToggle = document.getElementById('themeToggle');
-  const winModal = document.getElementById('winModal');
-  const winMessage = document.getElementById('winMessage');
-  const winSubtext = document.getElementById('winSubtext');
-  const closeModalBtn = document.getElementById('closeModalBtn');
-  const howToPlayModal = document.getElementById('howToPlayModal');
-  const closeHowToPlayBtn = document.getElementById('closeHowToPlayBtn');
-  const ambientSound = document.getElementById('ambientSound');
-  
-  // Audio elements
-  const clickSound = document.getElementById('clickSound');
-  const winSound = document.getElementById('winSound');
-  const drawSound = document.getElementById('drawSound');
-  const aiMoveSound = document.getElementById('aiMoveSound');
-  
-  // Initialize ambient sound
-  function playAmbient() {
-    ambientSound.volume = 0.3;
-    ambientSound.play().catch(e => console.log("Ambient sound not played:", e));
+
+  // Audio context for click sounds
+  let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  function playBeep(freq, duration=0.15) {
+    let osc = audioCtx.createOscillator();
+    let gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.type = 'square';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
   }
-  
-  // Play sound effects
-  function playSound(sound) {
-    sound.currentTime = 0;
-    sound.play().catch(e => console.log("Audio play prevented:", e));
-  }
-  
-  // Theme toggle
-  themeToggle.addEventListener('click', () => {
-    document.documentElement.setAttribute('data-theme', 
-      document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-    playSound(clickSound);
+
+  // Restart the game
+  restartBtn.addEventListener('click', () => {
+    initGame();
   });
   
   // Initialize game
@@ -635,92 +190,73 @@
     board.fill('');
     gameOver = false;
     currentPlayer = 'X';
-    
     cells.forEach(cell => {
       cell.textContent = '';
       cell.className = 'cell';
-      cell.addEventListener('click', onCellClick);
+      cell.removeAttribute('data-mark');
+      cell.addEventListener('click', onCellClick);  // Add click listener here
     });
-    
+    // If AI-first is checked, let AI (as X) make a random move
     if (aiCheckbox.checked) {
-      currentPlayer = 'O';
-      statusText.textContent = "AI (X) is contemplating...";
+      currentPlayer = 'O'; // let X be AI
+      statusText.textContent = "AI (X) is thinking...";
       setTimeout(aiMakeMove, randomDelay());
     } else {
       currentPlayer = 'X';
-      statusText.textContent = "Your Imperial Move, X";
+      statusText.textContent = "Player X's turn";
     }
   }
-  
-  // Cell click handler
+
   function onCellClick(e) {
     if (gameOver) return;
-    
     const idx = e.target.getAttribute('data-index');
-    if (board[idx] !== '') return;
-    
-    playSound(clickSound);
+    if (board[idx] !== '' ) return;
+    // First click should resume audio context for some browsers
+    audioCtx.resume();
     placeMark(idx, 'X');
+    playBeep(330); // click sound
     checkGameEnd();
-    
     if (!gameOver) {
       currentPlayer = 'O';
-      statusText.textContent = "The Royal AI is strategizing...";
+      statusText.textContent = "AI is thinking...";
       setTimeout(aiMakeMove, randomDelay());
     }
   }
-  
-  // AI move logic
+
   function aiMakeMove() {
     if (gameOver) return;
-    
-    let move;
-    if (aiDifficulty.value === 'random') {
-      // Random move for easy mode
-      const emptyCells = [];
-      for (let i = 0; i < 9; i++) {
-        if (board[i] === '') emptyCells.push(i);
-      }
-      move = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-    } else {
-      // Minimax for hard mode
-      let bestScore = Infinity;
-      for (let i = 0; i < 9; i++) {
-        if (board[i] === '') {
-          board[i] = 'O';
-          let score = minimax(board, 0, true);
-          board[i] = '';
-          if (score < bestScore) {
-            bestScore = score;
-            move = i;
-          }
+    // Minimax to find best move for O
+    let bestScore = Infinity, move = null;
+    for (let i = 0; i < 9; i++) {
+      if (board[i] === '') {
+        board[i] = 'O';
+        let score = minimax(board, 0, true);
+        board[i] = '';
+        if (score < bestScore) {
+          bestScore = score;
+          move = i;
         }
       }
     }
-    
-    if (move !== undefined) {
-      setTimeout(() => {
-        playSound(aiMoveSound);
-        placeMark(move, 'O');
-        checkGameEnd();
-        if (!gameOver) {
-          currentPlayer = 'X';
-          statusText.textContent = "Your Imperial Move, X";
-        }
-      }, 500);
+    if (move !== null) {
+      placeMark(move, 'O');
+      playBeep(440); // AI move sound
+    }
+    checkGameEnd();
+    if (!gameOver) {
+      currentPlayer = 'X';
+      statusText.textContent = "Player X's turn";
     }
   }
-  
-  // Place mark on board
+
   function placeMark(idx, mark) {
     board[idx] = mark;
     const cell = document.querySelector(`.cell[data-index='${idx}']`);
-    cell.textContent = mark;
+    cell.setAttribute('data-mark', mark);
     cell.classList.add(mark.toLowerCase());
     cell.removeEventListener('click', onCellClick);
   }
-  
-  // Check game status
+
   function checkGameEnd() {
     // Check for win
     let winner = null;
@@ -728,52 +264,44 @@
       const [a,b,c] = pattern;
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
         winner = board[a];
-        // Highlight winning cells
+        // highlight winning cells
         document.querySelector(`.cell[data-index='${a}']`).classList.add('win');
         document.querySelector(`.cell[data-index='${b}']`).classList.add('win');
         document.querySelector(`.cell[data-index='${c}']`).classList.add('win');
       }
     });
-    
     if (winner) {
       gameOver = true;
       if (winner === 'X') {
         xWins++;
         xWinsText.textContent = xWins;
-        winMessage.textContent = "Imperial Victory!";
-        winSubtext.textContent = "The kingdom bows before your strategic mastery!";
-        playSound(winSound);
       } else {
         oWins++;
         oWinsText.textContent = oWins;
-        winMessage.textContent = "Royal AI Triumphs!";
-        winSubtext.textContent = "The court favors the machine's cunning strategy!";
-        playSound(winSound);
       }
-      createConfetti();
-      setTimeout(() => winModal.style.display = 'flex', 1000);
+      statusText.textContent = `${winner} wins!`;
+      playBeep(600, 0.3); // win sound
       return;
     }
-    
     // Check for draw
     if (!board.includes('')) {
       gameOver = true;
       draws++;
       drawsText.textContent = draws;
-      winMessage.textContent = "Royal Truce!";
-      winSubtext.textContent = "Neither side could claim victory this day!";
-      playSound(drawSound);
-      setTimeout(() => winModal.style.display = 'flex', 500);
+      statusText.textContent = "It's a draw!";
+      playBeep(500, 0.2); // draw sound
+      return;
     }
   }
-  
-  // Minimax algorithm
+
+  // Minimax algorithm: returns score for 'X' (maximizer) perspective
   function minimax(boardState, depth, isMaximizing) {
+    // Check terminal states
     const win = checkWinner(boardState);
     if (win === 'X') return 10 - depth;
     if (win === 'O') return depth - 10;
-    if (!boardState.includes('')) return 0;
-    
+    if (!boardState.includes('')) return 0; // draw
+
     if (isMaximizing) {
       let best = -Infinity;
       for (let i = 0; i < 9; i++) {
@@ -796,8 +324,8 @@
       return best;
     }
   }
-  
-  // Check winner for minimax
+
+  // Check for a winner (for minimax)
   function checkWinner(bd) {
     for (let pattern of winPatterns) {
       const [a,b,c] = pattern;
@@ -807,85 +335,124 @@
     }
     return null;
   }
-  
-  // Helper functions
+
   function randomDelay() {
-    return 500 + Math.random() * 1000;
+    return 500 + Math.random() * 500;
   }
-  
-  function createConfetti() {
-    const types = ['gold', 'diamond'];
-    for (let i = 0; i < 150; i++) {
-      const confetti = document.createElement('div');
-      confetti.className = `confetti ${types[Math.floor(Math.random() * types.length)]}`;
-      confetti.style.left = Math.random() * 100 + 'vw';
-      confetti.style.width = Math.random() * 15 + 5 + 'px';
-      confetti.style.height = Math.random() * 15 + 5 + 'px';
-      confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-      document.body.appendChild(confetti);
-      
-      const animationDuration = Math.random() * 3 + 2;
-      confetti.style.animation = `fall ${animationDuration}s linear forwards`;
-      
-      setTimeout(() => {
-        confetti.remove();
-      }, animationDuration * 1000);
-    }
-    
-    // Add CSS animation for confetti
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes fall {
-        0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-        100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-      }
-      .gold { background: var(--gold-gradient); }
-      .diamond { background: linear-gradient(45deg, #b9f2ff 0%, #7ec4ff 50%, #b9f2ff 100%); }
-    `;
-    document.head.appendChild(style);
-  }
-  
-  // Event listeners
-  restartBtn.addEventListener('click', () => {
-    playSound(clickSound);
-    initGame();
-  });
-  
-  newGameBtn.addEventListener('click', () => {
-    playSound(clickSound);
-    xWins = 0;
-    oWins = 0;
-    draws = 0;
-    xWinsText.textContent = '0';
-    oWinsText.textContent = '0';
-    drawsText.textContent = '0';
-    initGame();
-  });
-  
-  howToPlayBtn.addEventListener('click', () => {
-    playSound(clickSound);
-    howToPlayModal.style.display = 'flex';
-  });
-  
-  closeModalBtn.addEventListener('click', () => {
-    playSound(clickSound);
-    winModal.style.display = 'none';
-    initGame();
-  });
-  
-  closeHowToPlayBtn.addEventListener('click', () => {
-    playSound(clickSound);
-    howToPlayModal.style.display = 'none';
-  });
-  
-  // Start ambient sound on first interaction
-  document.body.addEventListener('click', function init() {
-    playAmbient();
-    document.body.removeEventListener('click', init);
-  }, { once: true });
-  
-  // Initialize the game
+
+  // THE FIX: Initialize game on page load
   initGame();
 </script>
+
+<!-- [Rest of your HTML remains unchanged] -->
+<div id="randomQuote" style="margin-top: 10px; font-style: italic; opacity: 0; transition: opacity 1s ease-in-out; text-align: center;"></div>
+  
+<!-- Compliment Form -->
+<div class="compliment-form">
+  <h2>Leave a Compliment</h2>
+  <form action="https://getform.io/f/axowdjeb" method="POST">
+    <textarea name="message" placeholder="Your feedback..." required></textarea>
+    <input type="email" name="email" placeholder="Your email (optional)">
+    <button type="submit">Send Compliment</button>
+  </form>
+</div>
+
+<!-- Styles -->
+<style>
+  .compliment-form {
+    background: rgba(255,255,255,0.1);
+    padding: 1.2em;
+    border-radius: 20px;
+    margin: 2em auto;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .compliment-form h2 {
+    color: var(--accent-color);
+    margin-bottom: 0.5em;
+  }
+  .compliment-form textarea,
+  .compliment-form input[type="email"] {
+    width: 100%;
+    padding: 0.6em 0.8em;
+    margin-bottom: 0.8em;
+    border: none;
+    border-radius: 12px;
+    resize: vertical;
+    font-size: 0.95em;
+    outline: none;
+  }
+  .compliment-form textarea::placeholder,
+  .compliment-form input::placeholder {
+    color: rgba(0,0,0,0.5);
+  }
+  .compliment-form button {
+    padding: 0.6em 1.2em;
+    border: none;
+    border-radius: 20px;
+    background: var(--accent-color);
+    color: #111;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s;
+  }
+  .compliment-form button:hover {
+    background: #e0a800;
+    transform: translateY(-2px);
+  }
+</style>
+
+<!-- Quote Script -->
+<script>
+  const randomQuotes = [
+    "Conquer yourself and you conquer the world.",
+    "In the midst of chaos, there is also opportunity.",
+    "The crown is heavy only for the unworthy.",
+    "Every master was once a beginner.",
+    "The only limits that exist are the ones you place on yourself.",
+    "Victory belongs to the most persevering.",
+    "Fortune favors the bold, but it rewards the relentless.",
+    "Fear is a liar; the only true enemy is doubt.",
+    "The strongest steel is forged in the hottest fire.",
+    "Rise up, for the world belongs to those who dare to climb."
+  ];
+
+  function showRandomQuote() {
+    const index = Math.floor(Math.random() * randomQuotes.length);
+    const quoteText = randomQuotes[index];
+    const quoteDiv = document.getElementById('randomQuote');
+
+    quoteDiv.style.opacity = '0';
+
+    setTimeout(() => {
+      quoteDiv.textContent = quoteText;
+      quoteDiv.style.opacity = '1';
+    }, 500);
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const quoteDiv = document.getElementById('randomQuote');
+    quoteDiv.style.transition = 'opacity 1s ease-in-out';
+    quoteDiv.style.padding = '10px 20px';
+    quoteDiv.style.borderRadius = '25px';
+    quoteDiv.style.background = 'rgba(255, 255, 255, 0.6)';
+    quoteDiv.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
+    quoteDiv.style.fontSize = '1.2em';
+    quoteDiv.style.maxWidth = '80%';
+    quoteDiv.style.margin = '1rem auto';
+    quoteDiv.style.textAlign = 'center';
+    quoteDiv.style.opacity = '1';
+
+    showRandomQuote(); // First call
+    setInterval(showRandomQuote, 4000); // Repeat every 4s
+  });
+</script>
+  
+<!-- Footer -->
+<p style="margin-top: 1rem; font-size: 0.85em; color: var(--accent-color); text-align: center; opacity: 0.8;">
+  Crafted with brilliance by <strong>RD</strong> — A Royal Experience
+</p>
+  
 </body>
 </html>
