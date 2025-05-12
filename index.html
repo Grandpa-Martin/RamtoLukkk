@@ -2,177 +2,306 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <title>Tic Tac Toe - Royal Deluxe</title>
+  <title>Tic Tac Toe - Imperial Edition</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-color: #1a1a2e;
-      --panel-color: rgba(26, 26, 46, 0.8);
+      --bg-color: #0a0a0a;
+      --panel-color: rgba(20, 20, 20, 0.7);
       --text-color: #e6e6e6;
-      --x-color: #f05454;
-      --o-color: #6a67ce;
-      --accent-color: #ffd700;
-      --hover-color: rgba(255, 215, 0, 0.2);
-      --cell-bg: rgba(255, 255, 255, 0.1);
+      --x-color: #d4af37; /* Gold */
+      --o-color: #b9f2ff; /* Diamond */
+      --accent-color: #d4af37;
+      --hover-color: rgba(212, 175, 55, 0.2);
+      --cell-bg: rgba(255, 255, 255, 0.05);
+      --gold-gradient: linear-gradient(135deg, #d4af37 0%, #f9d423 50%, #d4af37 100%);
     }
+    
     [data-theme="light"] {
-      --bg-color: #f8f4e3;
-      --panel-color: rgba(248, 244, 227, 0.8);
+      --bg-color: #f5f5f5;
+      --panel-color: rgba(245, 245, 245, 0.9);
       --text-color: #333;
-      --x-color: #e74c3c;
-      --o-color: #3498db;
-      --accent-color: #e67e22;
-      --hover-color: rgba(230, 126, 34, 0.1);
-      --cell-bg: rgba(0, 0, 0, 0.05);
+      --x-color: #d4af37;
+      --o-color: #0077b6;
+      --accent-color: #d4af37;
+      --hover-color: rgba(212, 175, 55, 0.1);
+      --cell-bg: rgba(0, 0, 0, 0.03);
     }
+    
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     body {
-      background: var(--bg-color) url('https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1792&q=80') no-repeat center/cover fixed;
-      font-family: 'Roboto', sans-serif;
+      background: 
+        radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%),
+        var(--bg-color) url('https://images.unsplash.com/photo-1600566752229-250ed79470b9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3840&q=80') no-repeat center/cover fixed;
+      font-family: 'Playfair Display', serif;
       color: var(--text-color);
-      display: flex; flex-direction: column; align-items: center;
-      min-height: 100vh; padding: 1rem;
+      display: flex; 
+      flex-direction: column; 
+      align-items: center;
+      min-height: 100vh; 
+      padding: 1rem;
       transition: all 0.5s ease;
+      overflow-x: hidden;
     }
+    
     .container {
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px) brightness(0.8);
+      -webkit-backdrop-filter: blur(16px) brightness(0.8);
       background: var(--panel-color);
-      border-radius: 16px;
-      padding: 2rem;
+      border-radius: 20px;
+      padding: 2.5rem;
       width: 100%;
       max-width: 500px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      box-shadow: 
+        0 0 30px rgba(212, 175, 55, 0.3),
+        0 8px 60px rgba(0, 0, 0, 0.5);
       text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      margin-top: 2rem;
-      animation: fadeIn 0.8s ease-out;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      margin-top: 3rem;
+      animation: fadeIn 1s ease-out;
+      position: relative;
+      overflow: hidden;
     }
+    
+    .container::before {
+      content: "";
+      position: absolute;
+      top: -2px; left: -2px; right: -2px; bottom: -2px;
+      border-radius: 22px;
+      background: var(--gold-gradient);
+      z-index: -1;
+      opacity: 0.3;
+    }
+    
     h1 {
       font-family: 'Cinzel Decorative', cursive;
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       color: var(--accent-color);
       margin-bottom: 0.5rem;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-      letter-spacing: 1px;
+      text-shadow: 
+        0 0 10px rgba(212, 175, 55, 0.5),
+        2px 2px 4px rgba(0, 0, 0, 0.5);
+      letter-spacing: 2px;
+      position: relative;
+      display: inline-block;
     }
+    
+    h1::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 25%;
+      width: 50%;
+      height: 2px;
+      background: var(--gold-gradient);
+      border-radius: 2px;
+    }
+    
     .subtitle {
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
+      font-size: 1rem;
+      margin-bottom: 2rem;
       opacity: 0.8;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
+    
     .scoreboard {
       display: flex;
       justify-content: space-around;
-      margin-bottom: 1.5rem;
-      background: rgba(0, 0, 0, 0.2);
-      padding: 0.8rem;
-      border-radius: 10px;
+      margin-bottom: 2rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1rem;
+      border-radius: 12px;
       font-size: 1rem;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
     }
+    
     .score-item {
       display: flex;
       flex-direction: column;
       align-items: center;
+      flex: 1;
     }
+    
     .score-value {
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       font-weight: bold;
-      margin-top: 0.3rem;
+      margin-top: 0.5rem;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
     }
+    
     .status {
-      margin: 1rem 0;
-      font-size: 1.2rem;
+      margin: 1.5rem 0;
+      font-size: 1.3rem;
       font-weight: bold;
-      min-height: 2rem;
-      padding: 0.5rem;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 8px;
+      min-height: 2.5rem;
+      padding: 0.8rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      letter-spacing: 0.5px;
     }
+    
     #board {
       display: grid;
       grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-      gap: 10px;
-      margin: 1rem auto;
+      gap: 12px;
+      margin: 2rem auto;
       aspect-ratio: 1/1;
       width: 100%;
       max-width: 400px;
     }
+    
     .cell {
       background: var(--cell-bg);
-      border-radius: 12px;
+      border-radius: 15px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 3.5rem;
+      font-size: 4rem;
       cursor: pointer;
       position: relative;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.2),
+        inset 0 0 15px rgba(212, 175, 55, 0.1);
       aspect-ratio: 1/1;
+      border: 1px solid rgba(212, 175, 55, 0.1);
     }
+    
     .cell:hover {
       background: var(--hover-color);
-      transform: translateY(-3px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      transform: translateY(-5px);
+      box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.3),
+        inset 0 0 15px rgba(212, 175, 55, 0.2);
     }
-    .cell.x { color: var(--x-color); }
-    .cell.o { color: var(--o-color); }
+    
+    .cell.x { 
+      color: var(--x-color);
+      text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+    }
+    
+    .cell.o { 
+      color: var(--o-color);
+      text-shadow: 0 0 15px rgba(185, 242, 255, 0.5);
+    }
+    
     .cell.win {
       animation: glow 0.8s alternate infinite;
-      background: rgba(255, 215, 0, 0.2);
+      background: rgba(212, 175, 55, 0.2);
+      box-shadow: 
+        0 0 30px rgba(212, 175, 55, 0.5),
+        inset 0 0 15px rgba(212, 175, 55, 0.3);
     }
+    
     .controls {
       display: flex;
       justify-content: center;
-      gap: 1rem;
-      margin: 1.5rem 0;
+      gap: 1.5rem;
+      margin: 2rem 0;
       flex-wrap: wrap;
     }
+    
     button {
-      padding: 0.8rem 1.5rem;
+      padding: 1rem 2rem;
       border: none;
-      border-radius: 8px;
-      background: var(--accent-color);
+      border-radius: 10px;
+      background: var(--gold-gradient);
       color: #222;
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      min-width: 120px;
+      box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.3),
+        0 0 10px rgba(212, 175, 55, 0.3);
+      min-width: 160px;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
     }
+    
+    button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(255,255,255,0.2), transparent);
+      z-index: -1;
+    }
+    
     button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      transform: translateY(-3px);
+      box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.4),
+        0 0 15px rgba(212, 175, 55, 0.5);
     }
+    
     button:active {
       transform: translateY(0);
     }
+    
     .secondary-btn {
       background: rgba(255, 255, 255, 0.1);
       color: var(--text-color);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
+    
+    .secondary-btn:hover {
+      background: rgba(212, 175, 55, 0.1);
+    }
+    
     select, .checkbox-container {
-      padding: 0.8rem;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.3);
       color: var(--text-color);
-      border: none;
+      border: 1px solid rgba(212, 175, 55, 0.2);
       font-size: 1rem;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
+    
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d4af37'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1rem;
+      padding-right: 3rem;
+    }
+    
     .checkbox-container {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
     }
+    
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent-color);
+    }
+    
     #themeToggle {
       position: fixed;
-      top: 20px; right: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      width: 50px;
-      height: 50px;
+      top: 25px; 
+      right: 25px;
+      background: rgba(0, 0, 0, 0.3);
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -180,31 +309,61 @@
       cursor: pointer;
       transition: all 0.3s ease;
       z-index: 100;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     }
+    
     #themeToggle:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: rotate(30deg);
+      background: rgba(212, 175, 55, 0.1);
+      transform: rotate(30deg) scale(1.1);
     }
+    
     .confetti {
       position: fixed;
-      width: 10px;
-      height: 10px;
+      width: 15px;
+      height: 15px;
       background-color: var(--accent-color);
       opacity: 0;
       z-index: 999;
+      pointer-events: none;
     }
+    
+    .diamond {
+      background: linear-gradient(45deg, #b9f2ff 0%, #7ec4ff 50%, #b9f2ff 100%);
+    }
+    
+    .gold {
+      background: var(--gold-gradient);
+    }
+    
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    
     @keyframes glow {
-      0% { box-shadow: 0 0 15px var(--accent-color); }
-      100% { box-shadow: 0 0 30px var(--accent-color); }
+      0% { 
+        box-shadow: 
+          0 0 20px rgba(212, 175, 55, 0.5),
+          inset 0 0 15px rgba(212, 175, 55, 0.3);
+      }
+      100% { 
+        box-shadow: 
+          0 0 40px rgba(212, 175, 55, 0.8),
+          inset 0 0 25px rgba(212, 175, 55, 0.5);
+      }
     }
+    
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      50% { transform: translateY(-15px); }
     }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+    
     .modal {
       display: none;
       position: fixed;
@@ -212,42 +371,112 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.9);
       z-index: 1000;
       align-items: center;
       justify-content: center;
+      backdrop-filter: blur(10px);
     }
+    
     .modal-content {
-      background: var(--panel-color);
-      padding: 2rem;
-      border-radius: 16px;
+      background: rgba(20, 20, 20, 0.95);
+      padding: 3rem;
+      border-radius: 20px;
       max-width: 500px;
       width: 90%;
       text-align: center;
       animation: fadeIn 0.5s ease-out;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      box-shadow: 
+        0 0 50px rgba(212, 175, 55, 0.3),
+        0 0 100px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
     }
+    
+    .modal-content::before {
+      content: "";
+      position: absolute;
+      top: -2px; left: -2px; right: -2px; bottom: -2px;
+      border-radius: 22px;
+      background: var(--gold-gradient);
+      z-index: -1;
+      opacity: 0.3;
+    }
+    
     .trophy {
-      font-size: 4rem;
+      font-size: 5rem;
+      margin-bottom: 1.5rem;
+      color: var(--accent-color);
+      animation: float 3s ease-in-out infinite;
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    }
+    
+    .modal h2 {
+      font-family: 'Cinzel Decorative', cursive;
+      font-size: 2.5rem;
       margin-bottom: 1rem;
       color: var(--accent-color);
-      animation: bounce 1s infinite;
+      letter-spacing: 1px;
     }
+    
+    .modal p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    
     .how-to-play {
       text-align: left;
       margin-top: 2rem;
-      padding: 1rem;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 10px;
+      padding: 1.5rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 15px;
+      border: 1px solid rgba(212, 175, 55, 0.1);
     }
+    
     .how-to-play h3 {
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
       color: var(--accent-color);
+      font-family: 'Cinzel Decorative', cursive;
+      font-size: 1.3rem;
     }
+    
     .how-to-play ol {
       padding-left: 1.5rem;
     }
+    
     .how-to-play li {
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      #board {
+        max-width: 300px;
+      }
+      
+      .cell {
+        font-size: 3rem;
+      }
+      
+      .controls {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      button, select, .checkbox-container {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -256,7 +485,7 @@
 
   <div class="container">
     <h1>Tic Tac Toe</h1>
-    <div class="subtitle">Royal Deluxe Edition</div>
+    <div class="subtitle">Imperial Edition</div>
     
     <div class="scoreboard">
       <div class="score-item">
@@ -289,19 +518,19 @@
     
     <div class="controls">
       <select id="aiDifficulty">
-        <option value="minimax">Hard (Unbeatable)</option>
-        <option value="random">Easy (Random)</option>
+        <option value="minimax">Imperial (Unbeatable)</option>
+        <option value="random">Noble (Random)</option>
       </select>
       <div class="checkbox-container">
         <input type="checkbox" id="aiFirst">
-        <label for="aiFirst">AI First</label>
+        <label for="aiFirst">AI First Move</label>
       </div>
     </div>
     
     <div class="controls">
       <button id="restartBtn">Restart Game</button>
       <button id="newGameBtn" class="secondary-btn">New Match</button>
-      <button id="howToPlayBtn" class="secondary-btn">How to Play</button>
+      <button id="howToPlayBtn" class="secondary-btn">Imperial Rules</button>
     </div>
   </div>
 
@@ -310,36 +539,39 @@
       <div class="trophy">🏆</div>
       <h2 id="winMessage">X Wins!</h2>
       <p id="winSubtext">The kingdom bows before your skill!</p>
-      <button id="closeModalBtn" style="margin-top: 1.5rem;">Continue</button>
+      <button id="closeModalBtn">Continue</button>
     </div>
   </div>
 
   <div id="howToPlayModal" class="modal">
     <div class="modal-content">
-      <h2>How to Play Royal Tic Tac Toe</h2>
+      <h2>Imperial Tic Tac Toe Rules</h2>
       <div class="how-to-play">
         <h3>Game Rules:</h3>
         <ol>
-          <li>Player X (You) and Player O (AI) take turns marking spaces</li>
-          <li>The first to get 3 marks in a row (horizontally, vertically, or diagonally) wins</li>
-          <li>If all squares are filled without a winner, the game is a draw</li>
+          <li>Player X (Your Imperial Majesty) and Player O (The Royal AI) take turns marking spaces</li>
+          <li>The first to claim 3 thrones in a row (horizontally, vertically, or diagonally) wins the crown</li>
+          <li>If all thrones are claimed without a victor, the game ends in a royal truce</li>
         </ol>
-        <h3>Features:</h3>
+        <h3>Imperial Features:</h3>
         <ol>
-          <li>Choose between Easy (Random AI) and Hard (Unbeatable AI) difficulty</li>
-          <li>Let the AI go first for an extra challenge</li>
-          <li>Track your wins, losses, and draws</li>
-          <li>Enjoy immersive sound effects and animations</li>
+          <li><strong>Noble Mode:</strong> The AI makes random moves (for a gentler challenge)</li>
+          <li><strong>Imperial Mode:</strong> The AI uses royal strategy (nearly unbeatable)</li>
+          <li>Let the AI take the first move for a true test of your strategic prowess</li>
+          <li>Track your royal victories, defeats, and truces</li>
+          <li>Enjoy a truly imperial gaming experience with gold and diamond accents</li>
         </ol>
       </div>
-      <button id="closeHowToPlayBtn" style="margin-top: 1.5rem;">Got It!</button>
+      <button id="closeHowToPlayBtn">I Accept These Terms</button>
     </div>
   </div>
 
+  <!-- Luxury Sound Effects -->
   <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3" preload="auto"></audio>
   <audio id="winSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" preload="auto"></audio>
   <audio id="drawSound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3" preload="auto"></audio>
   <audio id="aiMoveSound" src="https://assets.mixkit.co/sfx/preview/mixkit-quick-jump-arcade-game-239.mp3" preload="auto"></audio>
+  <audio id="ambientSound" src="https://assets.mixkit.co/music/preview/mixkit-medieval-show-fanfare-1169.mp3" loop preload="auto"></audio>
 
 <script>
   // Game state variables
@@ -371,6 +603,7 @@
   const closeModalBtn = document.getElementById('closeModalBtn');
   const howToPlayModal = document.getElementById('howToPlayModal');
   const closeHowToPlayBtn = document.getElementById('closeHowToPlayBtn');
+  const ambientSound = document.getElementById('ambientSound');
   
   // Audio elements
   const clickSound = document.getElementById('clickSound');
@@ -378,7 +611,13 @@
   const drawSound = document.getElementById('drawSound');
   const aiMoveSound = document.getElementById('aiMoveSound');
   
-  // Sound effects
+  // Initialize ambient sound
+  function playAmbient() {
+    ambientSound.volume = 0.3;
+    ambientSound.play().catch(e => console.log("Ambient sound not played:", e));
+  }
+  
+  // Play sound effects
   function playSound(sound) {
     sound.currentTime = 0;
     sound.play().catch(e => console.log("Audio play prevented:", e));
@@ -388,6 +627,7 @@
   themeToggle.addEventListener('click', () => {
     document.documentElement.setAttribute('data-theme', 
       document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    playSound(clickSound);
   });
   
   // Initialize game
@@ -404,11 +644,11 @@
     
     if (aiCheckbox.checked) {
       currentPlayer = 'O';
-      statusText.textContent = "AI (X) is thinking...";
+      statusText.textContent = "AI (X) is contemplating...";
       setTimeout(aiMakeMove, randomDelay());
     } else {
       currentPlayer = 'X';
-      statusText.textContent = "Player X's turn";
+      statusText.textContent = "Your Imperial Move, X";
     }
   }
   
@@ -425,7 +665,7 @@
     
     if (!gameOver) {
       currentPlayer = 'O';
-      statusText.textContent = "AI is thinking...";
+      statusText.textContent = "The Royal AI is strategizing...";
       setTimeout(aiMakeMove, randomDelay());
     }
   }
@@ -465,7 +705,7 @@
         checkGameEnd();
         if (!gameOver) {
           currentPlayer = 'X';
-          statusText.textContent = "Player X's turn";
+          statusText.textContent = "Your Imperial Move, X";
         }
       }, 500);
     }
@@ -500,14 +740,14 @@
       if (winner === 'X') {
         xWins++;
         xWinsText.textContent = xWins;
-        winMessage.textContent = "You Win!";
-        winSubtext.textContent = "The kingdom bows before your skill!";
+        winMessage.textContent = "Imperial Victory!";
+        winSubtext.textContent = "The kingdom bows before your strategic mastery!";
         playSound(winSound);
       } else {
         oWins++;
         oWinsText.textContent = oWins;
-        winMessage.textContent = "AI Wins!";
-        winSubtext.textContent = "The royal court favors the machine!";
+        winMessage.textContent = "Royal AI Triumphs!";
+        winSubtext.textContent = "The court favors the machine's cunning strategy!";
         playSound(winSound);
       }
       createConfetti();
@@ -520,8 +760,8 @@
       gameOver = true;
       draws++;
       drawsText.textContent = draws;
-      winMessage.textContent = "It's a Draw!";
-      winSubtext.textContent = "The battle remains unresolved!";
+      winMessage.textContent = "Royal Truce!";
+      winSubtext.textContent = "Neither side could claim victory this day!";
       playSound(drawSound);
       setTimeout(() => winModal.style.display = 'flex', 500);
     }
@@ -570,18 +810,18 @@
   
   // Helper functions
   function randomDelay() {
-    return 500 + Math.random() * 500;
+    return 500 + Math.random() * 1000;
   }
   
   function createConfetti() {
-    const colors = ['#ffd700', '#f05454', '#6a67ce', '#ffffff'];
-    for (let i = 0; i < 100; i++) {
+    const types = ['gold', 'diamond'];
+    for (let i = 0; i < 150; i++) {
       const confetti = document.createElement('div');
-      confetti.className = 'confetti';
+      confetti.className = `confetti ${types[Math.floor(Math.random() * types.length)]}`;
       confetti.style.left = Math.random() * 100 + 'vw';
-      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      confetti.style.width = Math.random() * 10 + 5 + 'px';
-      confetti.style.height = Math.random() * 10 + 5 + 'px';
+      confetti.style.width = Math.random() * 15 + 5 + 'px';
+      confetti.style.height = Math.random() * 15 + 5 + 'px';
+      confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
       document.body.appendChild(confetti);
       
       const animationDuration = Math.random() * 3 + 2;
@@ -599,14 +839,20 @@
         0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
         100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
       }
+      .gold { background: var(--gold-gradient); }
+      .diamond { background: linear-gradient(45deg, #b9f2ff 0%, #7ec4ff 50%, #b9f2ff 100%); }
     `;
     document.head.appendChild(style);
   }
   
   // Event listeners
-  restartBtn.addEventListener('click', initGame);
+  restartBtn.addEventListener('click', () => {
+    playSound(clickSound);
+    initGame();
+  });
   
   newGameBtn.addEventListener('click', () => {
+    playSound(clickSound);
     xWins = 0;
     oWins = 0;
     draws = 0;
@@ -617,17 +863,26 @@
   });
   
   howToPlayBtn.addEventListener('click', () => {
+    playSound(clickSound);
     howToPlayModal.style.display = 'flex';
   });
   
   closeModalBtn.addEventListener('click', () => {
+    playSound(clickSound);
     winModal.style.display = 'none';
     initGame();
   });
   
   closeHowToPlayBtn.addEventListener('click', () => {
+    playSound(clickSound);
     howToPlayModal.style.display = 'none';
   });
+  
+  // Start ambient sound on first interaction
+  document.body.addEventListener('click', function init() {
+    playAmbient();
+    document.body.removeEventListener('click', init);
+  }, { once: true });
   
   // Initialize the game
   initGame();
