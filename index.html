@@ -342,7 +342,82 @@
   });
 
   // Theme toggle
-
+<!-- ENHANCEMENT 1: Ambient Music --><audio id="bgMusic" loop autoplay>
+  <source src="your-music.mp3" type="audio/mpeg">
+</audio>
+<button onclick="toggleMusic()" style="position: fixed; bottom: 10px; right: 10px;">Toggle Music</button>
+<script>
+  const music = document.getElementById('bgMusic');
+  function toggleMusic() {
+    if (music.paused) music.play();
+    else music.pause();
+  }
+</script><!-- ENHANCEMENT 2: Confetti on Win --><script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script><script>
+  function launchConfetti() {
+    confetti({
+      particleCount: 150,
+      spread: 100,
+      origin: { y: 0.6 }
+    });
+  }
+  // Call launchConfetti() inside your win condition
+</script><!-- ENHANCEMENT 3: Player Avatars --><style>
+  .avatar {
+    width: 40px; height: 40px; border-radius: 50%; margin: 0 10px;
+  }
+</style><div style="text-align:center; margin-top: 10px">
+  <img src="king.png" alt="Player X" class="avatar">
+  <img src="queen.png" alt="Player O" class="avatar">
+</div><!-- ENHANCEMENT 4: Animated Turn Indicator --><style>
+  .status.pulse {
+    animation: pulse 1s infinite alternate;
+  }
+  @keyframes pulse {
+    from { transform: scale(1); opacity: 0.7; }
+    to { transform: scale(1.1); opacity: 1; }
+  }
+</style><script>
+  function updateStatus(text) {
+    const el = document.getElementById('status');
+    el.textContent = text;
+    el.classList.add('pulse');
+  }
+</script><!-- ENHANCEMENT 5: Leaderboard --><script>
+  let winStreak = localStorage.getItem("winStreak") || 0;
+  function updateStreak(winner) {
+    if (winner === 'X') winStreak++;
+    else winStreak = 0;
+    localStorage.setItem("winStreak", winStreak);
+    alert(`Current Win Streak: ${winStreak}`);
+  }
+</script><!-- ENHANCEMENT 6: AI Difficulty --><select id="difficulty">
+  <option value="easy">Easy</option>
+  <option value="medium">Medium</option>
+  <option value="hard">Hard</option>
+</select>
+<script>
+  function aiMoveWithDifficulty() {
+    const level = document.getElementById('difficulty').value;
+    // Adjust AI logic based on level
+  }
+</script><!-- ENHANCEMENT 7: Easter Egg --><script>
+  document.body.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'G') alert("God Mode Activated!");
+  });
+</script><!-- ENHANCEMENT 8: Rotating Quotes --><div id="quote" style="margin-top:10px; font-style:italic;"></div>
+<script>
+  const quotes = [
+    "Victory belongs to the most tenacious. – Napoleon",
+    "A crown is merely a hat that lets the rain in. – Frederick the Great",
+    "Tactics without strategy is the noise before defeat."
+  ];
+  let qIndex = 0;
+  setInterval(() => {
+    document.getElementById('quote').textContent = quotes[qIndex++ % quotes.length];
+  }, 5000);
+</script><!-- ENHANCEMENT 9: Royal Seal --><div style="position: fixed; top: 10px; left: 10px; font-weight: bold;">
+  <img src="rd-logo.png" alt="RD Logo" style="width: 50px;">
+</div>
   // Start the game
   initGame();
 </script>
