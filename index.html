@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" data-theme="dark">
+  <head>
   <meta charset="UTF-8">
   <title>Tic Tac Toe - Royal Edition</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -123,7 +123,6 @@
 </head>
 <body>
 
-<div id="themeToggle" onclick="toggleTheme()">🌙 / ☀️</div>
 
 <div class="container">
   <h1>Tic Tac Toe - Royal</h1>
@@ -343,13 +342,12 @@
   });
 
   // Theme toggle
-  function toggleTheme() {
-    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', theme);
-  }
 
   // Start the game
   initGame();
 </script>
+  <p style="margin-top: 1rem; font-size: 0.85em; color: var(--accent-color); text-align: center; opacity: 0.8;">
+  Crafted with brilliance by <strong>RD</strong> — A Royal Experience
+  </p>
 </body>
 </html>
