@@ -1,316 +1,353 @@
-<!DOCTYPE html><html lang="en" data-theme="dark">
-<head>
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
   <meta charset="UTF-8">
   <title>Tic Tac Toe - Royal Edition</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    /* Basic reset and variables */
     :root {
+      --bg-color: #f0f4f8;
+      --panel-color: rgba(255, 255, 255, 0.3);
+      --text-color: #222;
+      --x-color: #D32F2F;
+      --o-color: #1976D2;
+      --accent-color: #FFC107;
+      --hover-color: rgba(255, 255, 255, 0.5);
+    }
+    [data-theme="dark"] {
       --bg-color: #121212;
       --panel-color: rgba(20, 20, 20, 0.4);
       --text-color: #eef;
-      --x-color: #D32F2F;
-      --o-color: #1976D2;
       --accent-color: #FFD600;
-      --hover-color: rgba(255, 255, 255, 0.5);
-    }* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background: var(--bg-color) url('https://source.unsplash.com/1600x900/?marble,royal') no-repeat center/cover;
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  color: var(--text-color);
-  display: flex; flex-direction: column; align-items: center;
-  min-height: 100vh; padding: 1rem;
-  transition: background 0.5s;
-}
-.container {
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  background: var(--panel-color);
-  border-radius: 20px;
-  padding: 20px;
-  width: 300px;
-  max-width: 90%;
-  box-shadow: 0 4px 30px rgba(0,0,0,0.1);
-  text-align: center;
-}
-h1 {
-  font-size: 1.5em;
-  color: var(--accent-color);
-  margin-bottom: 0.5em;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-}
-.scoreboard {
-  margin-bottom: 1em;
-  font-size: 0.9em;
-  letter-spacing: 0.5px;
-}
-.status {
-  margin: 0.5em 0 1em;
-  font-weight: bold;
-}
-#board {
-  display: grid;
-  grid-template: repeat(3, 80px) / repeat(3, 80px);
-  gap: 5px;
-  margin: 0 auto 1em;
-}
-.cell {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5em;
-  cursor: pointer;
-  position: relative;
-  transition: background 0.3s, transform 0.1s;
-}
-.cell:hover {
-  background: var(--hover-color);
-  transform: scale(1.05);
-}
-.cell.disabled { cursor: default; }
-.cell.x::before,
-.cell.o::before {
-  content: attr(data-mark);
-  opacity: 0;
-  animation: fadeIn 0.3s forwards;
-}
-.cell.win {
-  animation: glow 1s alternate infinite;
-  border: 2px solid var(--accent-color);
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.5); }
-  to { opacity: 1; transform: scale(1); }
-}
-@keyframes glow {
-  0% { box-shadow: 0 0 10px var(--accent-color); }
-  100% { box-shadow: 0 0 20px var(--accent-color); }
-}
-button {
-  margin: 0.5em 0.2em;
-  padding: 0.5em 1em;
-  border: none;
-  border-radius: 5px;
-  background: var(--accent-color);
-  color: #fff;
-  font-size: 0.9em;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-button:hover {
-  background: #e0a800;
-}
-
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg-color) url('https://source.unsplash.com/1600x900/?marble,royal') no-repeat center/cover;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      color: var(--text-color);
+      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh; padding: 1rem;
+      transition: background 0.5s;
+    }
+    .container {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      background: var(--panel-color);
+      border-radius: 20px;
+      padding: 20px;
+      width: 300px;
+      max-width: 90%;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h1 {
+      font-size: 1.5em;
+      color: var(--accent-color);
+      margin-bottom: 0.5em;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    .scoreboard {
+      margin-bottom: 1em;
+      font-size: 0.9em;
+      letter-spacing: 0.5px;
+    }
+    .status {
+      margin: 0.5em 0 1em;
+      font-weight: bold;
+    }
+    #board {
+      display: grid;
+      grid-template: repeat(3, 80px) / repeat(3, 80px);
+      gap: 5px;
+      margin: 0 auto 1em;
+    }
+    .cell {
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5em;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.3s, transform 0.1s;
+    }
+    .cell:hover {
+      background: var(--hover-color);
+      transform: scale(1.05);
+    }
+    .cell.disabled { cursor: default; }
+    .cell.x::before,
+    .cell.o::before {
+      content: attr(data-mark);
+      opacity: 0;
+      animation: fadeIn 0.3s forwards;
+    }
+    .cell.win {
+      animation: glow 1s alternate infinite;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes glow {
+      0% { box-shadow: 0 0 10px var(--accent-color); }
+      100% { box-shadow: 0 0 20px var(--accent-color); }
+    }
+    button {
+      margin: 0.5em 0.2em;
+      padding: 0.5em 1em;
+      border: none;
+      border-radius: 5px;
+      background: var(--accent-color);
+      color: #fff;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #e0a800;
+    }
+    #themeToggle {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: none;
+      font-size: 0.9em;
+      color: var(--text-color);
+      opacity: 0.7;
+    }
+    #themeToggle:hover { opacity: 1; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Tic Tac Toe - Royal</h1>
-    <div class="scoreboard">
-      X Wins: <span id="xWins">0</span> |
-      O Wins: <span id="oWins">0</span> |
-      Draws: <span id="draws">0</span>
-    </div>
-    <div class="status" id="status">Player X's turn</div>
-    <div id="board">
-      <div class="cell" data-index="0"></div>
-      <div class="cell" data-index="1"></div>
-      <div class="cell" data-index="2"></div>
-      <div class="cell" data-index="3"></div>
-      <div class="cell" data-index="4"></div>
-      <div class="cell" data-index="5"></div>
-      <div class="cell" data-index="6"></div>
-      <div class="cell" data-index="7"></div>
-      <div class="cell" data-index="8"></div>
-    </div>
-    <button id="restartBtn">Restart</button>
-    <span style="margin-left:10px;">
-      <label>AI First: <input type="checkbox" id="aiFirst"></label>
-    </span>
-    <div id="loading" style="display:none; font-size:0.8em; margin-top:10px;">AI is calculating...</div>
-  </div>  <footer style="margin-top: 20px; text-align: center; font-size: 0.8em; color: var(--accent-color);">
-    Created with purpose by <strong>RD</strong>
-  </footer>  <script>
-    let board = Array(9).fill('');
-    let currentPlayer = 'X';
-    let gameOver = false;
-    let xWins = 0, oWins = 0, draws = 0;
-    const winPatterns = [
-      [0,1,2],[3,4,5],[6,7,8],
-      [0,3,6],[1,4,7],[2,5,8],
-      [0,4,8],[2,4,6]
-    ];
-    const cells = document.querySelectorAll('.cell');
-    const statusText = document.getElementById('status');
-    const xWinsText = document.getElementById('xWins');
-    const oWinsText = document.getElementById('oWins');
-    const drawsText = document.getElementById('draws');
-    const restartBtn = document.getElementById('restartBtn');
-    const aiCheckbox = document.getElementById('aiFirst');
 
-    let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    function playBeep(freq, duration=0.15) {
-      let osc = audioCtx.createOscillator();
-      let gain = audioCtx.createGain();
-      osc.connect(gain); gain.connect(audioCtx.destination);
-      osc.type = 'square';
-      osc.frequency.value = freq;
-      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-      osc.start();
-      osc.stop(audioCtx.currentTime + duration);
-    }
 
-    function initGame() {
-      board.fill('');
-      gameOver = false;
+<div class="container">
+  <h1>Tic Tac Toe - Royal</h1>
+  <div class="scoreboard">
+    X Wins: <span id="xWins">0</span> |
+    O Wins: <span id="oWins">0</span> |
+    Draws: <span id="draws">0</span>
+  </div>
+  <div class="status" id="status">Player X's turn</div>
+  <div id="board">
+    <!-- 3x3 Cells -->
+    <div class="cell" data-index="0"></div>
+    <div class="cell" data-index="1"></div>
+    <div class="cell" data-index="2"></div>
+    <div class="cell" data-index="3"></div>
+    <div class="cell" data-index="4"></div>
+    <div class="cell" data-index="5"></div>
+    <div class="cell" data-index="6"></div>
+    <div class="cell" data-index="7"></div>
+    <div class="cell" data-index="8"></div>
+  </div>
+  <button id="restartBtn">Restart</button>
+  <span style="margin-left:10px;">
+    <label>AI First: <input type="checkbox" id="aiFirst"></label>
+  </span>
+</div>
+
+<script>
+  // Game state variables
+  let board = Array(9).fill('');
+  let currentPlayer = 'X';
+  let gameOver = false;
+  let xWins = 0, oWins = 0, draws = 0;
+  const winPatterns = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+  ];
+  const cells = document.querySelectorAll('.cell');
+  const statusText = document.getElementById('status');
+  const xWinsText = document.getElementById('xWins');
+  const oWinsText = document.getElementById('oWins');
+  const drawsText = document.getElementById('draws');
+  const restartBtn = document.getElementById('restartBtn');
+  const aiCheckbox = document.getElementById('aiFirst');
+
+  // Audio context for click sounds
+  let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  function playBeep(freq, duration=0.15) {
+    let osc = audioCtx.createOscillator();
+    let gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.type = 'square';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  }
+
+  // Initialize game
+  function initGame() {
+    board.fill('');
+    gameOver = false;
+    currentPlayer = 'X';
+    cells.forEach(cell => {
+      cell.textContent = '';
+      cell.className = 'cell';
+      cell.removeAttribute('data-mark');
+      cell.addEventListener('click', onCellClick);
+    });
+    // If AI-first is checked, let AI (as X) make a random move
+    if (aiCheckbox.checked) {
+      currentPlayer = 'O'; // let X be AI
+      statusText.textContent = "AI (X) is thinking...";
+      setTimeout(aiMakeMove, randomDelay());
+    } else {
       currentPlayer = 'X';
-      document.getElementById('loading').style.display = 'none';
-      cells.forEach(cell => {
-        cell.textContent = '';
-        cell.className = 'cell';
-        cell.removeAttribute('data-mark');
-        cell.addEventListener('click', onCellClick);
-      });
-      if (aiCheckbox.checked) {
-        currentPlayer = 'O';
-        statusText.textContent = "AI (X) is thinking...";
-        document.getElementById('loading').style.display = 'block';
-        setTimeout(aiMakeMove, randomDelay());
+      statusText.textContent = "Player X's turn";
+    }
+  }
+
+  function onCellClick(e) {
+    if (gameOver) return;
+    const idx = e.target.getAttribute('data-index');
+    if (board[idx] !== '' ) return;
+    // First click should resume audio context for some browsers
+    audioCtx.resume();
+    placeMark(idx, 'X');
+    playBeep(330); // click sound
+    checkGameEnd();
+    if (!gameOver) {
+      currentPlayer = 'O';
+      statusText.textContent = "AI is thinking...";
+      setTimeout(aiMakeMove, randomDelay());
+    }
+  }
+
+  function aiMakeMove() {
+    if (gameOver) return;
+    // Minimax to find best move for O
+    let bestScore = Infinity, move = null;
+    for (let i = 0; i < 9; i++) {
+      if (board[i] === '') {
+        board[i] = 'O';
+        let score = minimax(board, 0, true);
+        board[i] = '';
+        if (score < bestScore) {
+          bestScore = score;
+          move = i;
+        }
+      }
+    }
+    if (move !== null) {
+      placeMark(move, 'O');
+      playBeep(440); // AI move sound
+    }
+    checkGameEnd();
+    if (!gameOver) {
+      currentPlayer = 'X';
+      statusText.textContent = "Player X's turn";
+    }
+  }
+
+  function placeMark(idx, mark) {
+    board[idx] = mark;
+    const cell = document.querySelector(`.cell[data-index='${idx}']`);
+    cell.setAttribute('data-mark', mark);
+    cell.classList.add(mark.toLowerCase());
+    cell.removeEventListener('click', onCellClick);
+  }
+
+  function checkGameEnd() {
+    // Check for win
+    let winner = null;
+    winPatterns.forEach(pattern => {
+      const [a,b,c] = pattern;
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        winner = board[a];
+        // highlight winning cells
+        document.querySelector(`.cell[data-index='${a}']`).classList.add('win');
+        document.querySelector(`.cell[data-index='${b}']`).classList.add('win');
+        document.querySelector(`.cell[data-index='${c}']`).classList.add('win');
+      }
+    });
+    if (winner) {
+      gameOver = true;
+      if (winner === 'X') {
+        xWins++;
+        xWinsText.textContent = xWins;
       } else {
-        currentPlayer = 'X';
-        statusText.textContent = "Player X's turn";
+        oWins++;
+        oWinsText.textContent = oWins;
       }
+      statusText.textContent = `${winner} wins!`;
+      playBeep(600, 0.3); // win sound
+      return;
     }
-
-    function onCellClick(e) {
-      if (gameOver) return;
-      const idx = e.target.getAttribute('data-index');
-      if (board[idx] !== '') return;
-      audioCtx.resume();
-      placeMark(idx, 'X');
-      playBeep(330);
-      checkGameEnd();
-      if (!gameOver) {
-        currentPlayer = 'O';
-        statusText.textContent = "AI is thinking...";
-        document.getElementById('loading').style.display = 'block';
-        setTimeout(aiMakeMove, randomDelay());
-      }
+    // Check for draw
+    if (!board.includes('')) {
+      gameOver = true;
+      draws++;
+      drawsText.textContent = draws;
+      statusText.textContent = "It's a draw!";
+      playBeep(500, 0.2); // draw sound
+      return;
     }
+  }
 
-    function aiMakeMove() {
-      if (gameOver) return;
-      let bestScore = Infinity, move = null;
+  // Minimax algorithm: returns score for 'X' (maximizer) perspective
+  function minimax(boardState, depth, isMaximizing) {
+    // Check terminal states
+    const win = checkWinner(boardState);
+    if (win === 'X') return 10 - depth;
+    if (win === 'O') return depth - 10;
+    if (!boardState.includes('')) return 0; // draw
+
+    if (isMaximizing) {
+      let best = -Infinity;
       for (let i = 0; i < 9; i++) {
-        if (board[i] === '') {
-          board[i] = 'O';
-          let score = minimax(board, 0, true);
-          board[i] = '';
-          if (score < bestScore) {
-            bestScore = score;
-            move = i;
-          }
+        if (boardState[i] === '') {
+          boardState[i] = 'X';
+          best = Math.max(best, minimax(boardState, depth + 1, false));
+          boardState[i] = '';
         }
       }
-      if (move !== null) {
-        placeMark(move, 'O');
-        playBeep(440);
-      }
-      checkGameEnd();
-      if (!gameOver) {
-        currentPlayer = 'X';
-        statusText.textContent = "Player X's turn";
-        document.getElementById('loading').style.display = 'none';
-      }
-    }
-
-    function placeMark(idx, mark) {
-      board[idx] = mark;
-      const cell = document.querySelector(`.cell[data-index='${idx}']`);
-      cell.setAttribute('data-mark', mark);
-      cell.classList.add(mark.toLowerCase());
-      cell.removeEventListener('click', onCellClick);
-    }
-
-    function checkGameEnd() {
-      let winner = null;
-      winPatterns.forEach(pattern => {
-        const [a,b,c] = pattern;
-        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-          winner = board[a];
-          document.querySelector(`.cell[data-index='${a}']`).classList.add('win');
-          document.querySelector(`.cell[data-index='${b}']`).classList.add('win');
-          document.querySelector(`.cell[data-index='${c}']`).classList.add('win');
-        }
-      });
-      if (winner) {
-        gameOver = true;
-        document.getElementById('loading').style.display = 'none';
-        if (winner === 'X') {
-          xWins++;
-          xWinsText.textContent = xWins;
-        } else {
-          oWins++;
-          oWinsText.textContent = oWins;
-        }
-        statusText.textContent = `${winner} wins!`;
-        playBeep(600, 0.3);
-        return;
-      }
-      if (!board.includes('')) {
-        gameOver = true;
-        document.getElementById('loading').style.display = 'none';
-        draws++;
-        drawsText.textContent = draws;
-        statusText.textContent = "It's a draw!";
-        playBeep(500, 0.2);
-      }
-    }
-
-    function minimax(boardState, depth, isMaximizing) {
-      const win = checkWinner(boardState);
-      if (win === 'X') return 10 - depth;
-      if (win === 'O') return depth - 10;
-      if (!boardState.includes('')) return 0;
-      if (isMaximizing) {
-        let best = -Infinity;
-        for (let i = 0; i < 9; i++) {
-          if (boardState[i] === '') {
-            boardState[i] = 'X';
-            best = Math.max(best, minimax(boardState, depth + 1, false));
-            boardState[i] = '';
-          }
-        }
-        return best;
-      } else {
-        let best = Infinity;
-        for (let i = 0; i < 9; i++) {
-          if (boardState[i] === '') {
-            boardState[i] = 'O';
-            best = Math.min(best, minimax(boardState, depth + 1, true));
-            boardState[i] = '';
-          }
-        }
-        return best;
-      }
-    }
-
-    function checkWinner(bd) {
-      for (let pattern of winPatterns) {
-        const [a,b,c] = pattern;
-        if (bd[a] && bd[a] === bd[b] && bd[a] === bd[c]) {
-          return bd[a];
+      return best;
+    } else {
+      let best = Infinity;
+      for (let i = 0; i < 9; i++) {
+        if (boardState[i] === '') {
+          boardState[i] = 'O';
+          best = Math.min(best, minimax(boardState, depth + 1, true));
+          boardState[i] = '';
         }
       }
-      return null;
+      return best;
     }
+  }
 
-    function randomDelay() {
-      return 500 + Math.random() * 500;
+  // Check for a winner (for minimax)
+  function checkWinner(bd) {
+    for (let pattern of winPatterns) {
+      const [a,b,c] = pattern;
+      if (bd[a] && bd[a] === bd[b] && bd[a] === bd[c]) {
+        return bd[a];
+      }
     }
+    return null;
+  }
 
-    restartBtn.addEventListener('click', () => initGame());
+  function randomDelay() {
+    return 500 + Math.random() * 500;
+  }
+
+  restartBtn.addEventListener('click', () => {
     initGame();
-  </script></body>
+  });
+
+  // Theme toggle
+
+  // Start the game
+  initGame();
+</script>
+  <p style="margin-top: 1rem; font-size: 0.85em; color: var(--accent-color); text-align: center; opacity: 0.8;">
+  Crafted with brilliance by <strong>RD</strong> — A Royal Experience
+  </p>
+</body>
 </html>
